@@ -1,6 +1,7 @@
 package com.example.userservice.service.impl;
 
 import com.example.userservice.dto.UserDto;
+import com.example.userservice.entity.CompanyEntity;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.enums.SystemRole;
 import com.example.userservice.repository.CompanyRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.example.userservice.config.JwtConfig;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static com.example.userservice.config.Constant.*;
 import static com.example.userservice.util.Common.setFieldsToNull;
@@ -87,5 +89,12 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), DELETE_SUCCESS));
         }
         return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), DELETE_FAIL, null));
+    }
+
+    @Override
+    public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser(UserDto userDto) {
+        List<UserEntity> listUserEntity = userRepository.findAll();
+        List<UserDto> listUserDto = ReflectionMapper.mapList(listUserEntity, UserDto.class);
+        return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), GET_SUCCESS, listUserDto));
     }
 }

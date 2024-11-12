@@ -1,17 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { SETTING } from '../../core/configs/setting.config';
-import {
-  containsSpecialCharacter,
-  containsSpecialOrLetter,
-  isEmail,
-  isEmpty,
-  isPassword,
-  trimStringObject,
-} from '../../core/commons/func';
-import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
-import { LoadingService } from '../../core/services/loading.service';
+import {Component, OnInit} from '@angular/core';
+import {MessageService} from 'primeng/api';
+import {SETTING} from '../../core/configs/setting.config';
+import {Router} from '@angular/router';
+import {LoadingService} from '../../ngrx/services/loading.service';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Actions, ofType} from "@ngrx/effects";
+import {signup, signupFailure, signupSuccess} from "../../ngrx/actions/user.action";
+import {Subscription} from "rxjs";
+import {Store} from "@ngrx/store";
+import {UserStore} from "../../ngrx/stores/user.store";
 
 @Component({
   selector: 'app-register',
@@ -22,187 +19,105 @@ import { LoadingService } from '../../core/services/loading.service';
 export class RegisterComponent implements OnInit {
   public SYSTEM_PAGE = SETTING.SYSTEM_PAGE;
   public SYSTEM_ROLE = SETTING.SYSTEM_ROLE;
-  public authCandidate: any = {
-    email: '',
-    password: '',
-    confirmPassword: '',
-
-    verifyCode: '',
-    isPolicy: true,
-    isStep: false,
-  };
-  public authEmployer: any = {
-    email: '',
-    password: '',
-    confirmPassword: '',
-
-    verifyCode: '',
-    isPolicy: true,
-    isStep: false,
-
-    companyName: '',
-    companyCorporateTaxCode: '',
-  };
+  candidateForm: FormGroup;
+  employerForm: FormGroup;
+  isLoading: boolean = false;
+  private loadingSubscription: Subscription | undefined;
+  private signupSuccessSubscription: Subscription | undefined;
+  private signupFailureSubscription: Subscription | undefined;
 
   constructor(
     private messageService: MessageService,
-    private authService: AuthService,
     private router: Router,
-    private loadingService: LoadingService
-  ) {}
-
-  ngOnInit() {}
-
-  public onNextPage(key: string): void {
-    this.router.navigate([key]);
+    private loadingService: LoadingService,
+    private fb: FormBuilder,
+    private store: Store<UserStore>,
+    private actions$: Actions,
+  ) {
+    this.candidateForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      isPolicy: [true, [Validators.required]]
+    });
+    this.employerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      companyName: [Validators.required, Validators.email],
+      companyCorporateTaxCode: [Validators.required],
+      isPolicy: [true, [Validators.required]]
+    });
   }
 
-  private validAuthInput(type: string): boolean {
-    let errorMessage = '';
+  ngOnInit() {
+    this.loadingSubscription = this.loadingService.loading$.subscribe((loading) => {
+      this.isLoading = loading;
+    });
+    this.signupSuccessSubscription = this.actions$.pipe(ofType(signupSuccess)).subscribe((response) => {
+      this.loadingService.setLoading(false);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: response.message
+      });
+      this.router.navigate([SETTING.SYSTEM_PAGE.AUTH_LOGIN])
+    });
 
-    if (type === this.SYSTEM_ROLE.CANDIDATE) {
-      if (!isEmail(this.authCandidate.email)) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_EMAIL_FORMAT;
-      } else if (!isPassword(this.authCandidate.password)) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_PASSWORD_FORMAT;
-      } else if (
-        this.authCandidate.password !== this.authCandidate.confirmPassword
-      ) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_PASSWORD_NOT_MATCH;
-      } else if (isEmpty(this.authCandidate.isPolicy)) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_POLICY;
-      }
-    } else if (type === this.SYSTEM_ROLE.EMPLOYER) {
-      if (!isEmail(this.authEmployer.email)) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_EMAIL_FORMAT;
-      } else if (!isPassword(this.authEmployer.password)) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_PASSWORD_FORMAT;
-      } else if (
-        this.authEmployer.password !== this.authEmployer.confirmPassword
-      ) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_PASSWORD_NOT_MATCH;
-      } else if (
-        isEmpty(this.authEmployer.companyName) ||
-        containsSpecialCharacter(this.authEmployer.companyName)
-      ) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_COMPANY_NAME_FORMAT;
-      } else if (
-        isEmpty(this.authEmployer.companyCorporateTaxCode) ||
-        containsSpecialOrLetter(this.authEmployer.companyCorporateTaxCode)
-      ) {
-        errorMessage =
-          SETTING.SYSTEM_HTTP_MESSAGE.INVALID_COMPANY_CORPORATE_TAX_CODE;
-      } else if (isEmpty(this.authEmployer.isPolicy)) {
-        errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_POLICY;
-      }
-    }
-
-    if (!isEmpty(errorMessage)) {
+    this.signupFailureSubscription = this.actions$.pipe(ofType(signupFailure)).subscribe((response) => {
+      this.loadingService.setLoading(false);
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: errorMessage,
+        detail: response.error ? response.error.message : "Hệ thống xảy ra lỗi",
       });
-      return false;
-    }
-
-    return true;
+    });
   }
 
-  public onRegisterCandidate(): void {
-    if (this.validAuthInput(this.SYSTEM_ROLE.CANDIDATE)) {
-      this.authCandidate = trimStringObject(this.authCandidate);
-      const payload = {
-        email: this.authCandidate.email,
-        password: this.authCandidate.password,
-        verifyCode: this.authCandidate.verifyCode,
-        role: this.SYSTEM_ROLE.CANDIDATE,
+  isFieldValid(field: string, form: FormGroup): boolean {
+    return form.controls[field].invalid && form.controls[field].touched;
+  }
+
+  onNextPage(key: string): void {
+    this.router.navigate([key]);
+  }
+
+  onSignupCandidate() {
+    if (this.candidateForm.valid) {
+      this.loadingService.setLoading(true);
+      let payload: UserStore = {
+        userID: "",
+        companyID: "",
+        role: "",
+        username: "",
+        email: this.candidateForm.value.email,
+        password: this.candidateForm.value.password,
+        phone: "",
+        avatar: "",
+        profile: "",
+        status: SETTING.SYSTEM_STATUS.ACTIVE,
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+        updatedBy: "",
       };
-      this.apiRegister(payload);
+      this.store.dispatch(signup({ data: payload }));
+    } else {
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Vui lòng kiểm tra lại thông tin!'});
     }
   }
 
-  public onRegisterEmployer(): void {
-    if (this.validAuthInput(this.SYSTEM_ROLE.EMPLOYER)) {
-      this.authEmployer = trimStringObject(this.authEmployer);
-      const payload = {
-        email: this.authEmployer.email,
-        password: this.authEmployer.password,
-        role: this.SYSTEM_ROLE.EMPLOYER,
-        verifyCode: this.authCandidate.verifyCode,
-        companyName: this.authEmployer.companyName,
-        companyEmail: this.authEmployer.companyEmail,
-        companyCorporateTaxCode: this.authEmployer.companyCorporateTaxCode,
-      };
-      this.apiRegister(payload);
-    }
-  }
-
-  onVerifyCode(type: string): void {
-    if (type === this.SYSTEM_ROLE.CANDIDATE && this.validAuthInput(type))
-      this.apiVerifyCode(type, { email: this.authCandidate.email });
-
-    if (type === this.SYSTEM_ROLE.EMPLOYER && this.validAuthInput(type))
-      this.apiVerifyCode(type, { email: this.authEmployer.email });
-  }
-
-  apiVerifyCode(type: string, payload: any): void {
-    this.loadingService.show();
-    this.authService.verifyCode(payload).subscribe(
-      (result: any) => {
-        if (result.status === SETTING.SYSTEM_HTTP_STATUS.OK) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: result['message'],
-          });
-          setTimeout(() => {
-            this.loadingService.hide();
-            if (type === this.SYSTEM_ROLE.CANDIDATE)
-              this.authCandidate.isStep = true;
-
-            if (type === this.SYSTEM_ROLE.EMPLOYER)
-              this.authEmployer.isStep = true;
-          }, 500);
-        }
-      },
-      (error: any) => {
-        this.loadingService.hide();
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: error.error.massage || error.error.message,
-        });
-      }
-    );
-  }
-
-  apiRegister(payload: any): void {
-    this.loadingService.show();
-    this.authService.register(payload).subscribe(
-      (result: any) => {
-        if (result.status === SETTING.SYSTEM_HTTP_STATUS.OK) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: result['message'],
-          });
-          setTimeout(() => {
-            this.loadingService.hide();
-            setTimeout(() => {
-              this.router.navigate(['/auth/login']);
-            }, 2000);
-          }, 500);
-        }
-      },
-      (error: any) => {
-        this.loadingService.hide();
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: error.error.massage || error.error.message,
-        });
-      }
-    );
-  }
+  // public onRegisterEmployer(): void {
+  //   if (this.validAuthInput(this.SYSTEM_ROLE.ROLE_EMPLOYER)) {
+  //     this.authEmployer = trimStringObject(this.authEmployer);
+  //     const payload = {
+  //       email: this.authEmployer.email,
+  //       password: this.authEmployer.password,
+  //       role: this.SYSTEM_ROLE.ROLE_EMPLOYER,
+  //       verifyCode: this.authCandidate.verifyCode,
+  //       companyName: this.authEmployer.companyName,
+  //       companyEmail: this.authEmployer.companyEmail,
+  //       companyCorporateTaxCode: this.authEmployer.companyCorporateTaxCode,
+  //     };
+  //     this.apiRegister(payload);
+  //   }
+  // }
 }

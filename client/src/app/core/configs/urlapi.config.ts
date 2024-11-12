@@ -45,7 +45,7 @@ export enum UrlApi {
   // send notification email
   SEND_NOTIFICATION_EMAIL = 'api/notification/send-content-email',
 
-  // service pack
+  // services pack
   CREATE_SERVICE_PACK = `api/service-pack/create`,
   UPDATE_SERVICE_PACK = `api/service-pack/update`,
   DELETE_SERVICE_PACK = `api/service-pack/delete`,

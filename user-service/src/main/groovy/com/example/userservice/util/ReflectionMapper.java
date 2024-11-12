@@ -3,6 +3,7 @@ package com.example.userservice.util;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 @Slf4j
 public class ReflectionMapper {
@@ -26,5 +27,10 @@ public class ReflectionMapper {
             log.error("Error mapper reflection mapper", e.getMessage());
         }
         return null;
+    }
+    public static <S, T> List<T> mapList(List<S> source, Class<T> targetClass) {
+        return source.stream()
+                .map(entity -> ReflectionMapper.map(entity, targetClass))
+                .toList();
     }
 }

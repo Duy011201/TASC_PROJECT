@@ -1,7 +1,9 @@
 package com.example.userservice.service.impl;
 
 import com.example.userservice.dto.CompanyDto;
+import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.CompanyEntity;
+import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.CompanyRepository;
 import com.example.userservice.service.CompanyService;
 import com.example.userservice.util.HandleResponse;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static com.example.userservice.config.Constant.*;
 
@@ -39,7 +42,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<HandleResponse<CompanyDto>> deleteCompanyByID(String companyID) {
+    public ResponseEntity<HandleResponse> deleteCompanyByID(String companyID) {
         CompanyEntity companyEntity = companyRepository.findCompanyByID(companyID);
         if (companyEntity != null) {
             companyRepository.delete(companyEntity);
@@ -49,7 +52,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<HandleResponse<CompanyDto>> updateCompanyByID(CompanyDto companyDto) {
+    public ResponseEntity<HandleResponse> updateCompanyByID(CompanyDto companyDto) {
         CompanyEntity companyExit = companyRepository.findCompanyByID(companyDto.getCompanyID());
         if (companyExit == null) {
             return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), COMPANY_NOT_EXIT));
@@ -68,5 +71,12 @@ public class CompanyServiceImpl implements CompanyService {
 
         companyRepository.save(companyExit);
         return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), UPDATE_SUCCESS, null));
+    }
+
+    @Override
+    public ResponseEntity<HandleResponse<List<CompanyDto>>> getAllCompany(CompanyDto companyDto) {
+        List<CompanyEntity> listCompanyEntity = companyRepository.findAll();
+        List<CompanyDto> listCompanyDto = ReflectionMapper.mapList(listCompanyEntity, CompanyDto.class);
+        return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), GET_SUCCESS, listCompanyDto));
     }
 }

@@ -49,8 +49,8 @@ public class HandleResponse <T> {
     public HandleResponse(int status, String message, String token, String refreshToken, T data) {
         this.status = status;
         this.message = message;
+        this.data = data;
         this.token = token;
         this.refreshToken = refreshToken;
-        this.data = data;
     }
 }
