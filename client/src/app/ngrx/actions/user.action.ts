@@ -6,7 +6,7 @@ export const selectUserState = createFeatureSelector<UserStore>('user');
 export const setUser = createAction('[User] Set user', props<{ data: UserStore, token: string, refreshToken: string }>());
 
 export const getAllUser = createAction('[User] Get All Users');
-export const getAllUsersSuccess = createAction('[User] Get All Users Success', props<{ users: UserStore[] }>());
+export const getAllUserSuccess = createAction('[User] Get All Users Success', props<{ users: UserStore[] }>());
 export const getAllUserFailure = createAction('[User] Get All Users Failure', props<{ error: string }>());
 
 export const createUser = createAction('[User] Create User', props<{ user: UserStore }>());

@@ -5,7 +5,7 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
-  getAllUser, getAllUsersSuccess, getAllUserFailure,
+  getAllUser, getAllUserSuccess, getAllUserFailure,
   createUser, createUserSuccess, createUserFailure,
   updateUser, updateUserSuccess, updateUserFailure,
   deleteUser, deleteUserSuccess, deleteUserFailure,
@@ -27,7 +27,7 @@ export class UserEffect {
       ofType(getAllUser),
       mergeMap(() =>
         this.userService.getAllUser().pipe(
-          map(users => getAllUsersSuccess({ users })),
+          map(users => getAllUserSuccess({ users })),
           catchError(error => of(getAllUserFailure({ error: error.message })))
         )
       )

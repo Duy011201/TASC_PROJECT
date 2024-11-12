@@ -105,19 +105,29 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  // public onRegisterEmployer(): void {
-  //   if (this.validAuthInput(this.SYSTEM_ROLE.ROLE_EMPLOYER)) {
-  //     this.authEmployer = trimStringObject(this.authEmployer);
-  //     const payload = {
-  //       email: this.authEmployer.email,
-  //       password: this.authEmployer.password,
-  //       role: this.SYSTEM_ROLE.ROLE_EMPLOYER,
-  //       verifyCode: this.authCandidate.verifyCode,
-  //       companyName: this.authEmployer.companyName,
-  //       companyEmail: this.authEmployer.companyEmail,
-  //       companyCorporateTaxCode: this.authEmployer.companyCorporateTaxCode,
-  //     };
-  //     this.apiRegister(payload);
-  //   }
-  // }
+  onSignupEmployer() {
+    if (this.employerForm.valid) {
+      this.loadingService.setLoading(true);
+      let payload: UserStore = {
+        userID: "",
+        companyID: "",
+        role: "",
+        username: "",
+        email: this.employerForm.value.email,
+        password: this.employerForm.value.password,
+        phone: "",
+        avatar: "",
+        profile: "",
+        status: SETTING.SYSTEM_STATUS.ACTIVE,
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+        updatedBy: "",
+      };
+
+      // this.store.dispatch(signup({ data: payload }));
+    } else {
+      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Vui lòng kiểm tra lại thông tin!'});
+    }
+  }
 }
