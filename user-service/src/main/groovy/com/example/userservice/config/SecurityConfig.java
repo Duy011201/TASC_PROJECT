@@ -13,14 +13,19 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Value("${cors.allowed.origin}")
-    private String allowedOrigin;
+    @Value("${cors.allowed.client}")
+    private String allowedClient;
+
+    @Value("${cors.allowed.gateway}")
+    private String allowedGateway;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,7 +47,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(java.util.Collections.singletonList(allowedOrigin));
+        corsConfig.setAllowedOrigins(Arrays.asList(allowedClient, allowedGateway));
         corsConfig.setAllowedMethods(java.util.Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         corsConfig.setAllowedHeaders(java.util.Arrays.asList("*"));
         corsConfig.setAllowCredentials(true);

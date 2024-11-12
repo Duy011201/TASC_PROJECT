@@ -22,12 +22,12 @@ public class AuthController {
         return authService.login(userDto);
     }
 
-    @PostMapping("/sign-up-candidate")
+    @PostMapping("/signup-candidate")
     public ResponseEntity<HandleResponse<UserDto>> signupCandidate(@RequestBody UserDto userDto) {
         return authService.signupCandidate(userDto);
     }
 
-    @PostMapping("/sign-up-employer")
+    @PostMapping("/signup-employer")
     public ResponseEntity<HandleResponse<UserDto>> signupEmployer(@RequestBody UserDto userDto) {
         return authService.signupEmployer(userDto);
     }
