@@ -11,16 +11,19 @@ import {userReducer} from "./ngrx/reducers/user.reducer";
 import {UserEffect} from "./ngrx/effects/user.effect";
 import {MessageService} from "primeng/api";
 import {SharedModule} from "./share/share.module";
+import {companyReducer} from "./ngrx/reducers/company.reducer";
+import {CompanyEffect} from "./ngrx/effects/company.effect";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
     provideHttpClient(),
-    provideStore(),
-    provideEffects(),
-    provideStore({user: userReducer}),
-    provideEffects([UserEffect]),
+    provideStore({
+      user: userReducer,
+      company: companyReducer
+    }),
+    provideEffects([UserEffect, CompanyEffect]),
     provideStoreDevtools({maxAge: 25, logOnly: !isDevMode()}),
     provideRouterStore(),
     MessageService,

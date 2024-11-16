@@ -77,12 +77,12 @@ export class UserEffect {
   signup$ = createEffect(() =>
     this.actions$.pipe(
       ofType(signup),
-      mergeMap(({ data }) =>
-        this.userService.signup(data).pipe(
+      mergeMap(({ user }) =>
+        this.userService.signup(user).pipe(
           map(response => signupSuccess({
             message: response.message,
             status: response.status,
-            data: response.data
+            user: response.data
           })),
           catchError(error => of(signupFailure( error )))
         )

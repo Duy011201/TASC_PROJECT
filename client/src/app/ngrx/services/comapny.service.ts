@@ -18,8 +18,8 @@ export class CompanyService {
     return this.http.get<CompanyStore[]>(this.apiUrlUserService);
   }
 
-  createCompany(user: CompanyStore): Observable<CompanyStore> {
-    return this.http.post<CompanyStore>(this.apiUrlUserService, user);
+  createCompany(company: CompanyStore): Observable<{ status: number, message: string, company: CompanyStore }> {
+    return this.http.post<{status: number, message: string, company: CompanyStore}>(`${this.apiUrlUserServiceAuth}/create-company`, company);
   }
 
   updateCompany(company: CompanyStore): Observable<CompanyStore> {
