@@ -1,16 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
 import {
-  getAllUser, getAllUsersSuccess, getAllUserFailure,
+  getAllUser, getAllUserSuccess, getAllUserFailure,
   createUser, createUserSuccess, createUserFailure,
   updateUser, updateUserSuccess, updateUserFailure,
   deleteUser, deleteUserSuccess, deleteUserFailure,
   signup, signupSuccess, signupFailure,
   login, loginSuccess, loginFailure
 } from '../actions/user.action';
-import { UserState } from '../stores/user.store';
+import { UserState, UserStore } from '../stores/user.store';
 
 export const initialState: UserState = {
-  user: null,
+  user: [],
   loading: false,
   error: null
 };

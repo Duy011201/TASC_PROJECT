@@ -1,5 +1,5 @@
 export interface CompanyStore {
-  companyID: String;
+  companyID: String,
   companyName: String;
   introduce: String;
   email: String;
@@ -18,7 +18,7 @@ export interface CompanyStore {
 }
 
 export interface CompanyState {
-  user: CompanyStore | null;
+  company: CompanyStore | any;
   loading: boolean;
   error: string | null;
 }

@@ -37,38 +37,49 @@ export class CompanyEffect {
   createCompany$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createCompany),
-      mergeMap(({company}) =>
-        this.companyService.createCompany(company).pipe(
-          map(newUser => createCompanySuccess({user: company})),
-          catchError(error => of(createCompanyFailure({error: error.message})))
-        )
-      )
+      mergeMap(({ company }) => {
+        console.log('Effect triggered for createCompany:', company);
+        return this.companyService.createCompany(company).pipe(
+          map((response) => {
+            console.log('API response:', response);
+            return createCompanySuccess({
+              status: response.status,
+              message: response.message,
+              company: response.company
+            });
+          }),
+          catchError(error => {
+            console.error('API error:', error);
+            return of(createCompanyFailure({ error: error.message }));
+          })
+        );
+      })
     )
   );
 
-  // Update Company
-  updateUser$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateCompany),
-      mergeMap(({company}) =>
-        this.companyService.updateCompany(company).pipe(
-          map(updateCompany => updateCompanySuccess({company: updateCompany})),
-          catchError(error => of(updateCompanyFailure({error: error.message})))
-        )
-      )
-    )
-  );
-
-  // Delete Company
-  deleteUser$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(deleteCompany),
-      mergeMap(({companyID}) =>
-        this.companyService.deleteCompany(companyID).pipe(
-          map(() => deleteCompanySuccess({companyID})),
-          catchError(error => of(deleteCompanyFailure({error: error.message})))
-        )
-      )
-    )
-  );
+  // // Update Company
+  // updateUser$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(updateCompany),
+  //     mergeMap(({company}) =>
+  //       this.companyService.updateCompany(company).pipe(
+  //         map(updateCompany => updateCompanySuccess({company: updateCompany})),
+  //         catchError(error => of(updateCompanyFailure({error: error.message})))
+  //       )
+  //     )
+  //   )
+  // );
+  //
+  // // Delete Company
+  // deleteUser$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(deleteCompany),
+  //     mergeMap(({companyID}) =>
+  //       this.companyService.deleteCompany(companyID).pipe(
+  //         map(() => deleteCompanySuccess({companyID})),
+  //         catchError(error => of(deleteCompanyFailure({error: error.message})))
+  //       )
+  //     )
+  //   )
+  // );
 }

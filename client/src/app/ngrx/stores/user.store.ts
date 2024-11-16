@@ -16,7 +16,7 @@ export interface UserStore {
 }
 
 export interface UserState {
-  user: UserStore | null;
+  user: UserStore | any;
   loading: boolean;
   error: string | null;
 }

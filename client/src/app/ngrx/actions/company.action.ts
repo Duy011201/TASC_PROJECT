@@ -1,20 +1,20 @@
 import {createAction, createFeatureSelector, props} from '@ngrx/store';
 import {CompanyStore} from '../stores/company.store';
 
-export const selectCompanyStoreState = createFeatureSelector<CompanyStore>('company');
+export const selectCompanyState = createFeatureSelector<CompanyStore>('company');
 
-export const getAllCompanyStore = createAction('[CompanyStore] Get All CompanyStores');
-export const getAllCompanyStoresSuccess = createAction('[CompanyStore] Get All CompanyStores Success', props<{ company: CompanyStore[] }>());
-export const getAllCompanyStoreFailure = createAction('[CompanyStore] Get All CompanyStores Failure', props<{ error: string }>());
+export const getAllCompany = createAction('[Company] Get All Company');
+export const getAllCompanySuccess = createAction('[CompanyStore] Get All Company Success', props<{ company: CompanyStore[] }>());
+export const getAllCompanyFailure = createAction('[Company] Get All Company Failure', props<{ error: any }>());
 
-export const createCompanyStore = createAction('[CompanyStore] Create CompanyStore', props<{ company: CompanyStore }>());
-export const createCompanyStoreSuccess = createAction('[CompanyStore] Create CompanyStore Success', props<{ company: CompanyStore }>());
-export const createCompanyStoreFailure = createAction('[CompanyStore] Create CompanyStore Failure', props<{ error: string }>());
+export const createCompany = createAction('[Company] Create Company', props<{ company: CompanyStore }>());
+export const createCompanySuccess = createAction('[Company] Create Company Success', props<{ status: number, message: string, company: CompanyStore }>());
+export const createCompanyFailure = createAction('[Company] Create Company Failure', props<{ error: any }>());
 
-export const updateCompanyStore = createAction('[CompanyStore] Update CompanyStore', props<{ company: CompanyStore }>());
-export const updateCompanyStoreSuccess = createAction('[CompanyStore] Update CompanyStore Success', props<{ company: CompanyStore }>());
-export const updateCompanyStoreFailure = createAction('[CompanyStore] Update CompanyStore Failure', props<{ error: string }>());
+export const updateCompany = createAction('[Company] Update Company', props<{ company: CompanyStore }>());
+export const updateCompanySuccess = createAction('[Company] Update Company Success', props<{ status: number, message: string, company: CompanyStore }>());
+export const updateCompanyFailure = createAction('[Company] Update Company Failure', props<{ error: any }>());
 
-export const deleteCompanyStore = createAction('[CompanyStore] Delete CompanyStore', props<{ companyID: string }>());
-export const deleteCompanyStoreSuccess = createAction('[CompanyStore] Delete CompanyStore Success', props<{ companyID: string }>());
-export const deleteCompanyStoreFailure = createAction('[CompanyStore] Delete CompanyStore Failure', props<{ error: string }>());
+export const deleteCompany = createAction('[Company] Delete Company', props<{ companyID: string }>());
+export const deleteCompanySuccess = createAction('[Company] Delete Company Success', props<{ status: number, message: string, company: CompanyStore }>());
+export const deleteCompanyFailure = createAction('[Company] Delete Company Failure', props<{ error: any }>());

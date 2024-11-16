@@ -6,6 +6,7 @@ import {LoadingService} from '../../ngrx/services/loading.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Actions, ofType} from "@ngrx/effects";
 import {signup, signupFailure, signupSuccess} from "../../ngrx/actions/user.action";
+import {createCompany, createCompanyFailure, createCompanySuccess} from "../../ngrx/actions/company.action";
 import {Subscription} from "rxjs";
 import {Store} from "@ngrx/store";
 import {UserStore} from "../../ngrx/stores/user.store";
@@ -25,6 +26,8 @@ export class RegisterComponent implements OnInit {
   private loadingSubscription: Subscription | undefined;
   private signupSuccessSubscription: Subscription | undefined;
   private signupFailureSubscription: Subscription | undefined;
+  private createCompanySuccessSubscription: Subscription | undefined;
+  private createCompanyFailureSubscription: Subscription | undefined;
 
   constructor(
     private messageService: MessageService,
@@ -37,14 +40,25 @@ export class RegisterComponent implements OnInit {
     this.candidateForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      isPolicy: [true, [Validators.required]]
+      status: [SETTING.SYSTEM_STATUS.ACTIVE],
     });
     this.employerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      companyName: [Validators.required, Validators.email],
-      companyCorporateTaxCode: [Validators.required],
-      isPolicy: [true, [Validators.required]]
+      companyID: [''],
+      companyName: ['', [Validators.required]],
+      introduce: [''],
+      email: [''],
+      phone: [''],
+      province: [''],
+      address: [''],
+      field: [''],
+      avatar: [''],
+      scale: [''],
+      companyCorporateTaxCode: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      status: [SETTING.SYSTEM_STATUS.ACTIVE],
+      createdAt: [''],
+      updatedAt: [''],
+      createdBy: [''],
+      updatedBy: [''],
     });
   }
 
@@ -59,10 +73,31 @@ export class RegisterComponent implements OnInit {
         summary: 'Success',
         detail: response.message
       });
-      this.router.navigate([SETTING.SYSTEM_PAGE.AUTH_LOGIN])
+      // this.router.navigate([SETTING.SYSTEM_PAGE.AUTH_LOGIN])
     });
 
     this.signupFailureSubscription = this.actions$.pipe(ofType(signupFailure)).subscribe((response) => {
+      this.loadingService.setLoading(false);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: response.error ? response.error.message : "Hệ thống xảy ra lỗi",
+      });
+    });
+
+    this.createCompanySuccessSubscription = this.actions$.pipe(ofType(createCompanySuccess)).subscribe((response) => {
+      this.loadingService.setLoading(false);
+      let payload = this.employerForm.value;
+      this.store.dispatch(signup({ user: payload }));
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: response.message
+      });
+      this.router.navigate([SETTING.SYSTEM_PAGE.AUTH_LOGIN])
+    });
+
+    this.createCompanyFailureSubscription = this.actions$.pipe(ofType(createCompanyFailure)).subscribe((response) => {
       this.loadingService.setLoading(false);
       this.messageService.add({
         severity: 'error',
@@ -83,49 +118,18 @@ export class RegisterComponent implements OnInit {
   onSignupCandidate() {
     if (this.candidateForm.valid) {
       this.loadingService.setLoading(true);
-      let payload: UserStore = {
-        userID: "",
-        companyID: "",
-        role: "",
-        username: "",
-        email: this.candidateForm.value.email,
-        password: this.candidateForm.value.password,
-        phone: "",
-        avatar: "",
-        profile: "",
-        status: SETTING.SYSTEM_STATUS.ACTIVE,
-        createdAt: "",
-        updatedAt: "",
-        createdBy: "",
-        updatedBy: "",
-      };
-      this.store.dispatch(signup({ data: payload }));
+      let payload = this.candidateForm.value;
+      this.store.dispatch(signup({ user: payload }));
     } else {
       this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Vui lòng kiểm tra lại thông tin!'});
     }
   }
 
   onSignupEmployer() {
-    if (this.employerForm.valid) {
+    if (this.candidateForm.valid && this.employerForm.valid) {
       this.loadingService.setLoading(true);
-      let payload: UserStore = {
-        userID: "",
-        companyID: "",
-        role: "",
-        username: "",
-        email: this.employerForm.value.email,
-        password: this.employerForm.value.password,
-        phone: "",
-        avatar: "",
-        profile: "",
-        status: SETTING.SYSTEM_STATUS.ACTIVE,
-        createdAt: "",
-        updatedAt: "",
-        createdBy: "",
-        updatedBy: "",
-      };
-
-      // this.store.dispatch(signup({ data: payload }));
+      let payload = this.employerForm.value;
+      this.store.dispatch(createCompany({ company: payload }));
     } else {
       this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Vui lòng kiểm tra lại thông tin!'});
     }
