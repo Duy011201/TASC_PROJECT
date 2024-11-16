@@ -60,7 +60,7 @@ public class CompanyEntity implements Serializable {
     private Integer scale;
 
     @NotNull(message = "Scale should not be less than 1")
-        @Pattern(regexp = REX_NUMBER, message = "CorporateTaxCode number format is invalid")
+    @Pattern(regexp = REX_NUMBER, message = "CorporateTaxCode number format is invalid")
     @Column(name = "corporateTaxCode", length = 100, unique = true, nullable = false)
     private String corporateTaxCode;
 

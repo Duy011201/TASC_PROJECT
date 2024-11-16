@@ -20,14 +20,12 @@ import {UserStore} from "../../ngrx/stores/user.store";
 export class RegisterComponent implements OnInit {
   public SYSTEM_PAGE = SETTING.SYSTEM_PAGE;
   public SYSTEM_ROLE = SETTING.SYSTEM_ROLE;
-  candidateForm: FormGroup;
-  employerForm: FormGroup;
+  signupForm: FormGroup;
   isLoading: boolean = false;
+  stateOptions: any[] = [{ label: 'Ứng viên', value: 'one-way' },{ label: 'Nhà tuyển dụng', value: 'return' }];
   private loadingSubscription: Subscription | undefined;
   private signupSuccessSubscription: Subscription | undefined;
   private signupFailureSubscription: Subscription | undefined;
-  private createCompanySuccessSubscription: Subscription | undefined;
-  private createCompanyFailureSubscription: Subscription | undefined;
 
   constructor(
     private messageService: MessageService,
@@ -37,28 +35,11 @@ export class RegisterComponent implements OnInit {
     private store: Store<UserStore>,
     private actions$: Actions,
   ) {
-    this.candidateForm = this.fb.group({
+    this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      role: [this.SYSTEM_ROLE.ROLE_CANDIDATE, [Validators.required]],
       status: [SETTING.SYSTEM_STATUS.ACTIVE],
-    });
-    this.employerForm = this.fb.group({
-      companyID: [''],
-      companyName: ['', [Validators.required]],
-      introduce: [''],
-      email: [''],
-      phone: [''],
-      province: [''],
-      address: [''],
-      field: [''],
-      avatar: [''],
-      scale: [''],
-      companyCorporateTaxCode: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      status: [SETTING.SYSTEM_STATUS.ACTIVE],
-      createdAt: [''],
-      updatedAt: [''],
-      createdBy: [''],
-      updatedBy: [''],
     });
   }
 
@@ -73,31 +54,10 @@ export class RegisterComponent implements OnInit {
         summary: 'Success',
         detail: response.message
       });
-      // this.router.navigate([SETTING.SYSTEM_PAGE.AUTH_LOGIN])
-    });
-
-    this.signupFailureSubscription = this.actions$.pipe(ofType(signupFailure)).subscribe((response) => {
-      this.loadingService.setLoading(false);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: response.error ? response.error.message : "Hệ thống xảy ra lỗi",
-      });
-    });
-
-    this.createCompanySuccessSubscription = this.actions$.pipe(ofType(createCompanySuccess)).subscribe((response) => {
-      this.loadingService.setLoading(false);
-      let payload = this.employerForm.value;
-      this.store.dispatch(signup({ user: payload }));
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: response.message
-      });
       this.router.navigate([SETTING.SYSTEM_PAGE.AUTH_LOGIN])
     });
 
-    this.createCompanyFailureSubscription = this.actions$.pipe(ofType(createCompanyFailure)).subscribe((response) => {
+    this.signupFailureSubscription = this.actions$.pipe(ofType(signupFailure)).subscribe((response) => {
       this.loadingService.setLoading(false);
       this.messageService.add({
         severity: 'error',
@@ -115,21 +75,11 @@ export class RegisterComponent implements OnInit {
     this.router.navigate([key]);
   }
 
-  onSignupCandidate() {
-    if (this.candidateForm.valid) {
+  onSignup() {
+    if (this.signupForm.valid) {
       this.loadingService.setLoading(true);
-      let payload = this.candidateForm.value;
+      let payload = this.signupForm.value;
       this.store.dispatch(signup({ user: payload }));
-    } else {
-      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Vui lòng kiểm tra lại thông tin!'});
-    }
-  }
-
-  onSignupEmployer() {
-    if (this.candidateForm.valid && this.employerForm.valid) {
-      this.loadingService.setLoading(true);
-      let payload = this.employerForm.value;
-      this.store.dispatch(createCompany({ company: payload }));
     } else {
       this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Vui lòng kiểm tra lại thông tin!'});
     }

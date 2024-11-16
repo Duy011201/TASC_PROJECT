@@ -22,18 +22,8 @@ public class AuthController {
         return authService.login(userDto);
     }
 
-    @PostMapping("/signup-candidate")
+    @PostMapping("/signup")
     public ResponseEntity<HandleResponse<UserDto>> signupCandidate(@RequestBody UserDto userDto) {
-        return authService.signupCandidate(userDto);
-    }
-
-    @PostMapping("/signup-employer")
-    public ResponseEntity<HandleResponse<UserDto>> signupEmployer(@RequestBody UserDto userDto) {
-        return authService.signupEmployer(userDto);
-    }
-
-    @PostMapping("/create-company")
-    public ResponseEntity<HandleResponse<CompanyDto>> createCompany(@RequestBody CompanyDto companyDto) {
-        return authService.createCompany(companyDto);
+        return authService.signup(userDto);
     }
 }

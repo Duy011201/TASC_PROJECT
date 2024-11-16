@@ -30,82 +30,43 @@
       </h2>
       <p class="text-gray-600">Tạo tài khoản mới</p>
 
-      <p-tabView>
-        <p-tabPanel header="Ứng viên">
-          <form [formGroup]="candidateForm" (ngSubmit)="onSignupCandidate()" class="p-fluid">
-            <div class="p-field mt-4">
-              <label class="font-normal text-lg" for="email1">Email</label><span class="pl-2 text-red-600">*</span>
-              <input class="mt-2" id="email1" type="email" placeholder="Nhập email" pInputText formControlName="email"/>
-              <div *ngIf="isFieldValid('email', candidateForm)" class="error-message text-red-500">Email không hợp lệ!
-              </div>
-            </div>
+      <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="p-fluid">
+        <div class="p-field mt-4">
+          <label class="font-normal text-lg" for="email1">Email</label><span class="pl-2 text-red-600">*</span>
+          <input class="mt-2" id="email1" type="email" placeholder="Nhập email" pInputText formControlName="email"/>
+          <div *ngIf="isFieldValid('email', signupForm)" class="error-message text-red-500">Email không hợp lệ!
+          </div>
+        </div>
 
-            <div class="p-field mt-4">
-              <label class="font-normal text-lg" for="password1">Mật khẩu</label><span
-              class="pl-2 text-red-600">*</span>
-              <input class="mt-2" id="password1" type="password" placeholder="Nhập mật khẩu" pInputText
-                     formControlName="password"/>
-              <div *ngIf="isFieldValid('password', candidateForm)" class="error-message text-red-500">Mật khẩu ít nhất 6
-                ký tự!
-              </div>
-            </div>
+        <div class="p-field mt-4">
+          <label class="font-normal text-lg" for="password">Mật khẩu</label><span
+          class="pl-2 text-red-600">*</span>
+          <input class="mt-2" id="password" type="password" placeholder="Nhập mật khẩu" pInputText
+                 formControlName="password"/>
+          <div *ngIf="isFieldValid('password', signupForm)" class="error-message text-red-500">Mật khẩu ít nhất 6
+            ký tự!
+          </div>
+        </div>
 
-            <div class="p-field mt-4">
-              <button pButton type="button" label="Đăng ký" [loading]="isLoading"
-                      (click)="onSignupCandidate()"></button>
-            </div>
-          </form>
-        </p-tabPanel>
-        <p-tabPanel header="Nhà tuyển dụng">
-          <form [formGroup]="candidateForm" (ngSubmit)="onSignupCandidate()" class="p-fluid">
-            <div class="p-field mt-4">
-              <label class="font-normal text-lg" for="email1">Email</label><span class="pl-2 text-red-600">*</span>
-              <input class="mt-2" id="email" type="email" placeholder="Nhập email" pInputText formControlName="email"/>
-              <div *ngIf="isFieldValid('email', candidateForm)" class="error-message text-red-500">Email không hợp lệ!
-              </div>
-            </div>
+        <div class="flex flex-wrap gap-3 mt-4">
+          <div class="flex align-items-center">
+            <p-radioButton
+              inputId="role-candidate" name="role" formControlName="role" [value]="SYSTEM_ROLE.ROLE_CANDIDATE"/>
+            <label for="role-candidate" class="ml-2">Ứng viên</label>
+          </div>
 
-            <div class="p-field mt-4">
-              <label class="font-normal text-lg" for="password1">Mật khẩu</label><span
-              class="pl-2 text-red-600">*</span>
-              <input class="mt-2" id="password" type="password" placeholder="Nhập mật khẩu" pInputText
-                     formControlName="password"/>
-              <div *ngIf="isFieldValid('password', candidateForm)" class="error-message text-red-500">Mật khẩu ít nhất 6
-                ký tự!
-              </div>
-            </div>
-          </form>
+          <div class="flex align-items-center">
+            <p-radioButton
+              inputId="role-employer" name="role" formControlName="role" [value]="SYSTEM_ROLE.ROLE_EMPLOYER"/>
+            <label for="role-employer" class="ml-2">Nhà tuyển dụng</label>
+          </div>
+        </div>
 
-          <form [formGroup]="employerForm" (ngSubmit)="onSignupCandidate()" class="p-fluid">
-            <div class="flex gap-4">
-              <div class="p-field mt-4">
-                <label class="font-normal text-lg" for="employerCompanyName">Tên công ty</label>
-                <span class="pl-2 text-red-600">*</span>
-                <input class="mt-2" id="employerCompanyName" type="text" placeholder="Nhập tên công ty" pInputText
-                       formControlName="companyName"/>
-                <div *ngIf="isFieldValid('companyName', employerForm)" class="error-message text-red-500">Tên
-                  công ty không hợp lệ!
-                </div>
-              </div>
-
-              <div class="p-field mt-4">
-                <label class="font-normal text-lg" for="employerCompanyCorporateTaxCode">Mã số thuế</label><span
-                class="pl-2 text-red-600">*</span>
-                <input class="mt-2" id="employerCompanyCorporateTaxCode" type="text" placeholder="Nhập mã số thuế"
-                       pInputText formControlName="companyCorporateTaxCode"/>
-                <div *ngIf="isFieldValid('companyCorporateTaxCode', employerForm)" class="error-message text-red-500">Mã
-                  số thuế không hợp lệ!
-                </div>
-              </div>
-            </div>
-
-            <div class="p-field mt-4">
-              <button pButton type="button" label="Đăng ký" [loading]="isLoading"
-                      (click)="onSignupEmployer()"></button>
-            </div>
-          </form>
-        </p-tabPanel>
-      </p-tabView>
+        <div class="p-field mt-4">
+          <button pButton type="button" label="Đăng ký" [loading]="isLoading"
+                  (click)="onSignup()"></button>
+        </div>
+      </form>
       <p-toast></p-toast>
     </section>
   </div>

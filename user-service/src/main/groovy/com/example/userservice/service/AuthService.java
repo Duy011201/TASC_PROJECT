@@ -9,7 +9,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface AuthService {
     public ResponseEntity<HandleResponse> login (UserDto userDto);
-    public ResponseEntity<HandleResponse<UserDto>> signupCandidate (UserDto userDto);
-    public ResponseEntity<HandleResponse<UserDto>> signupEmployer (UserDto userDto);
-    public ResponseEntity<HandleResponse<CompanyDto>> createCompany(CompanyDto companyDto);
+    public ResponseEntity<HandleResponse<UserDto>> signup (UserDto userDto);
 }

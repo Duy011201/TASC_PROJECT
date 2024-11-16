@@ -31,7 +31,7 @@ export class UserService {
   }
 
   signup(user: UserStore): Observable<{ status: number, message: string, data: UserStore }> {
-    return this.http.post<{ status: number, message: string, data: UserStore }>(`${this.apiUrlUserServiceAuth}/signup-candidate`, user);
+    return this.http.post<{ status: number, message: string, data: UserStore }>(`${this.apiUrlUserServiceAuth}/signup`, user);
   }
 
   login(email: string, password: string): Observable<{ status: number, message: string, data: UserStore; token: string, refreshToken: string }> {

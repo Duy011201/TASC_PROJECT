@@ -51,14 +51,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<HandleResponse<UserDto>> signupCandidate(UserDto userDto) {
+    public ResponseEntity<HandleResponse<UserDto>> signup           (UserDto userDto) {
         UserEntity userExit = userRepository.findUserByEmail(userDto.getEmail());
 
         if (userExit == null) {
             UserEntity newUser = new UserEntity();
             newUser.setEmail(userDto.getEmail());
             newUser.setPassword(HashPassword.encodePassword(userDto.getPassword()));
-            newUser.setRole(String.valueOf(SystemRole.ROLE_CANDIDATE));
+            newUser.setRole(userDto.getRole());
             newUser.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             newUser.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
             newUser.setCreatedBy(newUser.getUserID());
@@ -67,51 +67,6 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), SING_UP_SUCCESS, userDto));
         } else {
             return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), ACCOUNT_EXIT));
-        }
-    }
-
-    @Override
-    public ResponseEntity<HandleResponse<UserDto>> signupEmployer(UserDto userDto) {
-        if (userRepository.findUserByEmail(userDto.getEmail()) != null) {
-            return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), ACCOUNT_EXIT));
-        }
-
-        String companyId = userDto.getCompanyID();
-        if (StringUtils.isEmpty(userDto.getCompanyID())) {
-            return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), COMPANY_REQUIRE));
-        }
-
-        if (companyRepository.findCompanyByID(companyId) == null) {
-            return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), COMPANY_NOT_EXIT));
-        }
-
-        UserEntity newUser = new UserEntity();
-        newUser.setCompanyID(companyId);
-        newUser.setEmail(userDto.getEmail());
-        newUser.setPassword(HashPassword.encodePassword(userDto.getPassword()));
-        newUser.setRole(String.valueOf(SystemRole.ROLE_EMPLOYER));
-        newUser.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        newUser.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        newUser.setCreatedBy(newUser.getUserID());
-        userRepository.save(newUser);
-        userDto.setUserID(newUser.getUserID());
-        return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), SING_UP_SUCCESS, userDto));
-    }
-
-    @Override
-    public ResponseEntity<HandleResponse<CompanyDto>> createCompany(CompanyDto companyDto) {
-        CompanyEntity companyExit = companyRepository.findCompanyByCorporateTaxCode(companyDto.getCorporateTaxCode());
-
-        if (companyExit == null) {
-            CompanyEntity companyEntity = ReflectionMapper.map(companyDto, CompanyEntity.class);
-            companyEntity.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-            companyEntity.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-            companyEntity.setCreatedBy(companyEntity.getCompanyID());
-            companyRepository.save(companyEntity);
-            companyDto.setCompanyID(companyEntity.getCompanyID());
-            return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), ADD_SUCCESS, companyDto));
-        } else {
-            return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), CORPORATE_TAX_CODE_EXIT));
         }
     }
 }
