@@ -48,7 +48,7 @@ public class CompanyServiceImpl implements CompanyService {
             companyRepository.delete(companyEntity);
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), DELETE_SUCCESS));
         }
-        return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), DELETE_FAIL, null));
+        return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), DELETE_FAIL));
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyExit.setUpdatedBy(companyDto.getUpdatedBy());
 
         companyRepository.save(companyExit);
-        return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), UPDATE_SUCCESS, null));
+        return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), UPDATE_SUCCESS));
     }
 
     @Override

@@ -50,43 +50,42 @@
               </div>
             </div>
 
-            <div class="flex flex-row gap-2 align-items-center mt-2">
-              <p-triStateCheckbox formControlName="isPolicy" inputId="rule"></p-triStateCheckbox>
-              <p>Tôi đã đọc và đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi</p>
-            </div>
-
-            <div class="p-field mt-2">
+            <div class="p-field mt-4">
               <button pButton type="button" label="Đăng ký" [loading]="isLoading"
                       (click)="onSignupCandidate()"></button>
             </div>
           </form>
-
         </p-tabPanel>
         <p-tabPanel header="Nhà tuyển dụng">
-          <form [formGroup]="employerForm" (ngSubmit)="onSignupCandidate()" class="p-fluid">
+          <form [formGroup]="candidateForm" (ngSubmit)="onSignupCandidate()" class="p-fluid">
             <div class="p-field mt-4">
-              <label class="font-normal text-lg" for="email2">Email</label><span class="pl-2 text-red-600">*</span>
-              <input class="mt-2" id="email2" type="email" placeholder="Nhập email" pInputText formControlName="email"/>
-              <div *ngIf="isFieldValid('email', employerForm)" class="error-message text-red-500">Email không hợp lệ!
+              <label class="font-normal text-lg" for="email1">Email</label><span class="pl-2 text-red-600">*</span>
+              <input class="mt-2" id="email" type="email" placeholder="Nhập email" pInputText formControlName="email"/>
+              <div *ngIf="isFieldValid('email', candidateForm)" class="error-message text-red-500">Email không hợp lệ!
               </div>
             </div>
 
             <div class="p-field mt-4">
-              <label class="font-normal text-lg" for="password2">Mật khẩu</label><span
+              <label class="font-normal text-lg" for="password1">Mật khẩu</label><span
               class="pl-2 text-red-600">*</span>
-              <input class="mt-2" id="password2" type="password" placeholder="Nhập mật khẩu" pInputText
+              <input class="mt-2" id="password" type="password" placeholder="Nhập mật khẩu" pInputText
                      formControlName="password"/>
-              <div *ngIf="isFieldValid('password', employerForm)" class="error-message text-red-500">Mật khẩu ít nhất 6
+              <div *ngIf="isFieldValid('password', candidateForm)" class="error-message text-red-500">Mật khẩu ít nhất 6
                 ký tự!
               </div>
             </div>
+          </form>
 
+          <form [formGroup]="employerForm" (ngSubmit)="onSignupCandidate()" class="p-fluid">
             <div class="flex gap-4">
               <div class="p-field mt-4">
                 <label class="font-normal text-lg" for="employerCompanyName">Tên công ty</label>
                 <span class="pl-2 text-red-600">*</span>
                 <input class="mt-2" id="employerCompanyName" type="text" placeholder="Nhập tên công ty" pInputText
                        formControlName="companyName"/>
+                <div *ngIf="isFieldValid('companyName', employerForm)" class="error-message text-red-500">Tên
+                  công ty không hợp lệ!
+                </div>
               </div>
 
               <div class="p-field mt-4">
@@ -94,15 +93,13 @@
                 class="pl-2 text-red-600">*</span>
                 <input class="mt-2" id="employerCompanyCorporateTaxCode" type="text" placeholder="Nhập mã số thuế"
                        pInputText formControlName="companyCorporateTaxCode"/>
+                <div *ngIf="isFieldValid('companyCorporateTaxCode', employerForm)" class="error-message text-red-500">Mã
+                  số thuế không hợp lệ!
+                </div>
               </div>
             </div>
 
-            <div class="flex flex-row gap-2 align-items-center mt-2">
-              <p-triStateCheckbox formControlName="isPolicy" inputId="rule"></p-triStateCheckbox>
-              <p>Tôi đã đọc và đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi</p>
-            </div>
-
-            <div class="p-field mt-2">
+            <div class="p-field mt-4">
               <button pButton type="button" label="Đăng ký" [loading]="isLoading"
                       (click)="onSignupEmployer()"></button>
             </div>

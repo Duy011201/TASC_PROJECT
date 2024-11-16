@@ -1,18 +1,16 @@
-package com.example.userservice.config;
+package com.example.cloudgateway.config;
 
-import com.example.userservice.dto.UserDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -71,17 +69,17 @@ public class JwtConfig {
         }
     }
 
-//    Authentication getAuthentication(String token) {
-//        String role = getRoleFromJwtToken(token);
-//        if (role != null) {
-//            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
-//            return new UsernamePasswordAuthenticationToken(role, null, Collections.singletonList(authority));  // Tạo Authentication với 'role'
-//        }
-//        return null;
-//    }
+    Authentication getAuthentication(String token) {
+        String role = getRoleFromJwtToken(token);
+        if (role != null) {
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
+            return new UsernamePasswordAuthenticationToken(role, null, Collections.singletonList(authority));  // Tạo Authentication với 'role'
+        }
+        return null;
+    }
 
-    public String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+    public String getJwtFromRequest(ServerHttpRequest request) {
+        String bearerToken = request.getHeaders().getFirst("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }

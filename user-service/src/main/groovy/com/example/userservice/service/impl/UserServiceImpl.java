@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
             UserDto userDto = ReflectionMapper.map(userEntity, UserDto.class);
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), GET_SUCCESS, userDto));
         }
-        return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), GET_FAIL, null));
+        return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), GET_FAIL));
     }
 
     @Override
@@ -86,9 +86,9 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findUserByID(userID);
         if (userEntity != null) {
             userRepository.delete(userEntity);
-            return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), DELETE_SUCCESS));
+            return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), DELETE_SUCCESS, userEntity));
         }
-        return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), DELETE_FAIL, null));
+        return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), DELETE_FAIL));
     }
 
     @Override
