@@ -52,9 +52,16 @@ export class LoginComponent implements OnInit, OnDestroy {
         summary: 'Success',
         detail: response.message
       });
-      this.store.dispatch(setUser({data: response?.data, token: response?.token, refreshToken: response?.refreshToken}));
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('refreshToken', response.refreshToken);
+
+      this.store.dispatch(setUser({
+        data: response?.data,
+        token: response?.token,
+        refreshToken: response?.refreshToken
+      }));
       if (response.data.role === this.SYSTEM_ROLE.ROLE_ADMIN) {
-        this.onNextPage(this.SYSTEM_PAGE.RELATED_ADMIN + '/' + this.SYSTEM_PAGE.MANAGER_ORDER_APPROVAL);
+        this.onNextPage(this.SYSTEM_PAGE.RELATED_ADMIN + '/' + this.SYSTEM_PAGE.DASHBOARD);
       }
       if (response.data.role === this.SYSTEM_ROLE.ROLE_EMPLOYER) {
         this.onNextPage(this.SYSTEM_PAGE.RELATED_EMPLOYER + '/' + this.SYSTEM_PAGE.DASHBOARD);

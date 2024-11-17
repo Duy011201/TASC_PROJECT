@@ -9,7 +9,7 @@ export class RequestApiService {
   constructor(private http: HttpClient) {
   }
 
-  private static getAuthHeaders(): HttpHeaders {
+  public static authHeaders(): HttpHeaders {
     const token = getFromLocalStorage('token');
     if (token !== null) {
       return new HttpHeaders({
@@ -24,24 +24,7 @@ export class RequestApiService {
     });
   }
 
-  postApi(url: string, body?: object): Observable<any> {
-    return this.http.post(`${environment.API_URL}/${url}`, body);
-  }
-
-  getApi(url: string, body: object): Observable<any> {
-    return this.http.get(`${environment.API_URL}/${url}`, body);
-  }
-
-  postApiHeader(apiUrl: string, body: any): Observable<any> {
-    const headers = RequestApiService.getAuthHeaders();
-    const token = getFromLocalStorage('token');
-    if (token !== null) {
-      body.token = removeQuotes(getFromLocalStorage('token'));
-    }
-    return this.http.post(`${environment.API_URL}/${apiUrl}`, body, {headers});
-  }
-
-  private static getAuthHeadersFile(): HttpHeaders {
+  private static authHeadersFile(): HttpHeaders {
     const token = removeQuotes(getFromLocalStorage('token'));
     if (token !== null) {
       return new HttpHeaders({
@@ -52,7 +35,7 @@ export class RequestApiService {
   }
 
   postApiHeaderFile(apiUrl: string, body: any, files?: File[]): Observable<any> {
-    const headers = RequestApiService.getAuthHeadersFile();
+    const headers = RequestApiService.authHeadersFile();
     const formData: FormData = new FormData();
 
     for (const key in body) {

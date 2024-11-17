@@ -1,5 +1,6 @@
 package com.example.cloudgateway.config;
 
+import com.example.cloudgateway.enums.SystemRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
@@ -54,15 +55,14 @@ public class JwtConfig {
                 .compact();
     }
 
-    public String getRoleFromJwtToken(String token) {
+    public Claims getClaimsFromJwtToken(String token) {
         try {
             Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-            Claims claims = Jwts.parserBuilder()
+            return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return claims.get("role", String.class);
         } catch (Exception e) {
             log.error("Invalid or expired JWT token", e);
             return null;
@@ -70,10 +70,15 @@ public class JwtConfig {
     }
 
     Authentication getAuthentication(String token) {
-        String role = getRoleFromJwtToken(token);
-        if (role != null) {
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
-            return new UsernamePasswordAuthenticationToken(role, null, Collections.singletonList(authority));  // Tạo Authentication với 'role'
+        Claims claims = getClaimsFromJwtToken(token);
+        if (claims != null) {
+            String username = claims.getSubject();
+            String role = claims.get("role", String.class);
+
+            if (role != null && SystemRole.isRole(role)) {
+                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
+                return new UsernamePasswordAuthenticationToken(username, null, Collections.singletonList(authority));
+            }
         }
         return null;
     }
@@ -86,12 +91,12 @@ public class JwtConfig {
         return null;
     }
 
-    public boolean validateJwtToken(String authToken) {
+    public boolean validateJwtToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                     .build()
-                    .parseClaimsJws(authToken);
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             log.error("Invalid JWT token: {}", e.getMessage());

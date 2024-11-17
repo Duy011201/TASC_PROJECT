@@ -14,5 +14,5 @@ public interface UserService {
     public ResponseEntity<HandleResponse> updateUserByID (UserDto userDto);
     public ResponseEntity<HandleResponse<UserDto>> getUserByID (String userID);
     public ResponseEntity<HandleResponse> deleteUserByID (String userID);
-    public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser (UserDto userDto);
+    public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser ();
 }

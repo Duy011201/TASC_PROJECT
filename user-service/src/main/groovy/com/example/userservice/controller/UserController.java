@@ -3,6 +3,7 @@ package com.example.userservice.controller;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.service.UserService;
 import com.example.userservice.util.HandleResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -23,22 +23,22 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public ResponseEntity<HandleResponse<UserDto>> getUserByID(@RequestBody UserDto userDto) {
+    public ResponseEntity<HandleResponse<UserDto>> getUserByID(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser(@RequestBody UserDto userDto) {
-        return userService.getAllUser(userDto);
+    public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser() {
+        return userService.getAllUser();
     }
 
     @PostMapping("/{userID}")
-    public ResponseEntity<HandleResponse> deleteUserByID(@PathVariable String userID) {
+    public ResponseEntity<HandleResponse> deleteUserByID(@Valid @PathVariable String userID) {
         return userService.deleteUserByID(userID);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<HandleResponse> updateUserByID(@RequestBody UserDto userDto) {
+    public ResponseEntity<HandleResponse> updateUserByID(@Valid @RequestBody UserDto userDto) {
         return userService.updateUserByID(userDto);
     }
 }

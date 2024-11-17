@@ -23,6 +23,7 @@ public interface Constant {
     public static final String COMPANY_REQUIRE = "Công ty bắt buộc";
 
     public static final String LOGIN_FAIL = "Đăng nhập thất bại";
+    public static final String INCORRECT_EMAIL_OR_PASSWORD = "Email hoặc mật khẩu không chính xác";
     public static final String SIGN_UP_FAIL = "Đăng ký thất bại";
     public static final String ADD_FAIL = "Thêm thất bại";
     public static final String UPDATE_FAIL = "Sửa thất bại";

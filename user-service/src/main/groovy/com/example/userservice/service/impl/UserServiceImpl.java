@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser(UserDto userDto) {
+    public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser() {
         List<UserEntity> listUserEntity = userRepository.findAll();
         List<UserDto> listUserDto = ReflectionMapper.mapList(listUserEntity, UserDto.class);
         return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), GET_SUCCESS, listUserDto));

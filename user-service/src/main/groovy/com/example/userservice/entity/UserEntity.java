@@ -2,9 +2,7 @@ package com.example.userservice.entity;
 
 import com.example.userservice.enums.SystemStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.io.Serial;
@@ -29,7 +27,7 @@ public class UserEntity implements Serializable {
     @Column(name = "companyID", length = 36)
     private String companyID;
 
-    @NotNull(message = "Role must not be null")
+    @NotBlank(message = "Role must not be blank")
     @Column(name = "role", length = 36)
     private String role;
 
@@ -37,20 +35,18 @@ public class UserEntity implements Serializable {
     private String username;
 
     @Email(message = "Email should be valid")
-    @NotNull(message = "Email must not be null")
+    @NotBlank(message = "Email must not be blank")
     @Pattern(regexp = REX_EMAIL, message = "Email format is invalid")
     @Column(name = "email", length = 50, unique = true, nullable = false)
     private String email;
 
-    @NotNull(message = "Password must not be null")
+    @Min(value = 6, message = "Password should not be less than 6")
+    @NotBlank(message = "Password must not be blank")
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
     @Column(name = "phone", length = 20)
     private String phone;
-
-    @Column(name = "avatar", length = 255)
-    private String avatar;
 
     @Column(name = "profile", length = 255)
     private String profile;

@@ -4,6 +4,7 @@ import com.example.userservice.dto.CompanyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.service.CompanyService;
 import com.example.userservice.util.HandleResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/company")
 public class CompanyController {
 
@@ -23,13 +23,13 @@ public class CompanyController {
         return companyService.getAllCompany(companyDto);
     }
 
-    @GetMapping("/create")
-    public ResponseEntity<HandleResponse<CompanyDto>> getUserByID(@RequestBody CompanyDto companyDto) {
+    @PostMapping("/create")
+    public ResponseEntity<HandleResponse<CompanyDto>> createCompany(@Valid @RequestBody CompanyDto companyDto) {
         return companyService.createCompany(companyDto);
     }
 
-    @PostMapping("/{userID}")
-    public ResponseEntity<HandleResponse> deleteUserByID(@PathVariable String companyID) {
-        return companyService.deleteCompanyByID(companyID);
-    }
+//    @PostMapping("/{userID}")
+//    public ResponseEntity<HandleResponse> deleteUserByID(@Valid @PathVariable String companyID) {
+//        return companyService.deleteCompanyByID(companyID);
+//    }
 }

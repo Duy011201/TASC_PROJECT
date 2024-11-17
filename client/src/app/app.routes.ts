@@ -10,6 +10,11 @@ export const routes: Routes = [
     data: {showHeader: false, showFooter: false},
   },
   {
+    path: SETTING.SYSTEM_PAGE.RELATED_ADMIN,
+    loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
+    data: {showHeader: false, showFooter: false},
+  },
+  {
     path: SETTING.SYSTEM_PAGE.RELATED_404,
     component: PageNotFoundComponent,
     data: {showHeader: true, showFooter: true},

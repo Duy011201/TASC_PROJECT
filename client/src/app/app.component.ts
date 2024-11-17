@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {
   Router,
   RouterOutlet,
@@ -10,7 +10,8 @@ import {isEmpty} from './core/commons/func';
 import {CommonModule} from '@angular/common';
 import {HeaderComponent} from './component/header/header.component';
 import {FooterComponent} from './component/footer/footer.component';
-import {Observable} from "rxjs";
+import {SharedModule} from "primeng/api";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -22,8 +23,11 @@ import {Observable} from "rxjs";
     HeaderComponent,
     FooterComponent,
     CommonModule,
+    SharedModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+  ],
 })
 export class AppComponent implements OnInit {
   /*

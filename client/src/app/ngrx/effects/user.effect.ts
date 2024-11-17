@@ -27,7 +27,7 @@ export class UserEffect {
       ofType(getAllUser),
       mergeMap(() =>
         this.userService.getAllUser().pipe(
-          map(users => getAllUserSuccess({ users })),
+          map(user => getAllUserSuccess({ data: user })),
           catchError(error => of(getAllUserFailure({ error: error.message })))
         )
       )
@@ -40,7 +40,12 @@ export class UserEffect {
       ofType(createUser),
       mergeMap(({ user }) =>
         this.userService.createUser(user).pipe(
-          map(newUser => createUserSuccess({ user: newUser })),
+          map((response) =>
+            createUserSuccess({
+              message: response.message,
+              status: response.status,
+              data: response.data
+            })),
           catchError(error => of(createUserFailure({ error: error.message })))
         )
       )
@@ -53,7 +58,11 @@ export class UserEffect {
       ofType(updateUser),
       mergeMap(({ user }) =>
         this.userService.updateUser(user).pipe(
-          map(updatedUser => updateUserSuccess({ user: updatedUser })),
+          map(response => updateUserSuccess({
+            message: response.message,
+            status: response.status,
+            data: response.data
+          })),
           catchError(error => of(updateUserFailure({ error: error.message })))
         )
       )
@@ -66,7 +75,11 @@ export class UserEffect {
       ofType(deleteUser),
       mergeMap(({ userID }) =>
         this.userService.deleteUser(userID).pipe(
-          map(() => deleteUserSuccess({ userID })),
+          map((response) => deleteUserSuccess({
+            message: response.message,
+            status: response.status,
+            data: response.data
+          })),
           catchError(error => of(deleteUserFailure({ error: error.message })))
         )
       )
@@ -82,7 +95,7 @@ export class UserEffect {
           map(response => signupSuccess({
             message: response.message,
             status: response.status,
-            user: response.data
+            data: response.data
           })),
           catchError(error => of(signupFailure( error )))
         )

@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), LOGIN_SUCCESS, token, refreshToken, userEntity));
         }
 
-        return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), LOGIN_FAIL));
+        return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), INCORRECT_EMAIL_OR_PASSWORD));
     }
 
     @Override
