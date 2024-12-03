@@ -22,19 +22,19 @@ public class UserController {
         return userService.getUserByID(userID);
     }
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<HandleResponse<UserDto>> getUserByID(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
 
-    @GetMapping("/all")
+    @PostMapping("/all")
     public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser() {
         return userService.getAllUser();
     }
 
-    @PostMapping("/{userID}")
-    public ResponseEntity<HandleResponse> deleteUserByID(@Valid @PathVariable String userID) {
-        return userService.deleteUserByID(userID);
+    @PostMapping("/delete")
+    public ResponseEntity<HandleResponse> deleteUserByID(@Valid @RequestBody UserDto userDto) {
+        return userService.deleteUserByID(userDto);
     }
 
     @PostMapping("/update")

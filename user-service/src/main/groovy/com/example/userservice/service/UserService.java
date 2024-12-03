@@ -13,6 +13,6 @@ public interface UserService {
     public ResponseEntity<HandleResponse<UserDto>> createUser (UserDto userDto);
     public ResponseEntity<HandleResponse> updateUserByID (UserDto userDto);
     public ResponseEntity<HandleResponse<UserDto>> getUserByID (String userID);
-    public ResponseEntity<HandleResponse> deleteUserByID (String userID);
+    public ResponseEntity<HandleResponse> deleteUserByID (UserDto userDto);
     public ResponseEntity<HandleResponse<List<UserDto>>> getAllUser ();
 }

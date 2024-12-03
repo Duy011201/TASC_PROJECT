@@ -49,7 +49,4 @@ public class UserDto {
     private String createdBy;
 
     private String updatedBy;
-
-    public UserDto(String userID, String email, String role) {
-    }
 }

@@ -18,8 +18,8 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @GetMapping("/all")
-    public ResponseEntity<HandleResponse<List<CompanyDto>>> getAllCompany(@RequestBody CompanyDto companyDto) {
+    @PostMapping("/all")
+    public ResponseEntity<HandleResponse<List<CompanyDto>>> getAllCompany(@Valid @RequestBody CompanyDto companyDto) {
         return companyService.getAllCompany(companyDto);
     }
 

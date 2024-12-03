@@ -1,17 +1,13 @@
 package com.example.userservice.service.impl;
 
 import com.example.userservice.config.JwtConfig;
-import com.example.userservice.dto.CompanyDto;
 import com.example.userservice.dto.UserDto;
-import com.example.userservice.entity.CompanyEntity;
 import com.example.userservice.entity.UserEntity;
-import com.example.userservice.enums.SystemRole;
 import com.example.userservice.repository.CompanyRepository;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.AuthService;
 import com.example.userservice.util.HandleResponse;
 import com.example.userservice.util.HashPassword;
-import com.example.userservice.util.ReflectionMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
