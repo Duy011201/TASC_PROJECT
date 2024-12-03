@@ -28,8 +28,13 @@ public class CompanyController {
         return companyService.createCompany(companyDto);
     }
 
-//    @PostMapping("/{userID}")
-//    public ResponseEntity<HandleResponse> deleteUserByID(@Valid @PathVariable String companyID) {
-//        return companyService.deleteCompanyByID(companyID);
-//    }
+    @PostMapping("/delete")
+    public ResponseEntity<HandleResponse> deleteCompanyByID(@Valid @RequestBody CompanyDto companyDto) {
+        return companyService.deleteCompanyByID(companyDto);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<HandleResponse> updateCompanyByID(@Valid @RequestBody CompanyDto companyDto) {
+        return companyService.updateCompanyByID(companyDto);
+    }
 }

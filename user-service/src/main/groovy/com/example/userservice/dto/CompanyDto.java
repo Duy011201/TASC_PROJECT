@@ -43,10 +43,6 @@ public class CompanyDto {
 
     private String avatar;
 
-    @Min(value = 1, message = "Scale should not be less than 1")
-    @Column(name = "scale", columnDefinition = "SMALLINT")
-    private Integer scale;
-
     @NotBlank(message = "Scale should not be less than 1")
     @Pattern(regexp = REX_NUMBER, message = "CorporateTaxCode number format is invalid")
     private String corporateTaxCode;

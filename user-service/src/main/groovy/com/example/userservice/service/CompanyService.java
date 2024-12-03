@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public interface CompanyService {
     public ResponseEntity<HandleResponse<CompanyDto>> createCompany(CompanyDto companyDto);
-    public ResponseEntity<HandleResponse> deleteCompanyByID (String companyID);
+    public ResponseEntity<HandleResponse> deleteCompanyByID (CompanyDto companyDto);
     public ResponseEntity<HandleResponse> updateCompanyByID (CompanyDto companyDto);
     public ResponseEntity<HandleResponse<List<CompanyDto>>> getAllCompany (CompanyDto companyDto);
 }

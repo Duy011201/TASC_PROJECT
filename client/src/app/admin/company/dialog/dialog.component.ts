@@ -10,6 +10,7 @@ import {
   trimStringObject,
 } from '../../../core/commons/func';
 import { environment } from '../../../core/environments/develop.environment';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-admin-company-dialog',
@@ -24,28 +25,37 @@ export class DialogCompanyComponent implements OnInit {
 
   LIST_PROVINCE: any = CONSTANT.COMPANY_PROVINCE;
   LIST_FIELD: any = CONSTANT.COMPANY_FIELD;
-  LIST_SCALE: any = CONSTANT.COMPANY_SCALE;
   LIST_STATUS: any = CONSTANT.SYSTEM_STATUS;
   SYSTEM_ACTION = SETTING.SYSTEM_ACTION;
 
-  selectScale: any = {};
-  selectProvince: any = {};
-  selectField: any = {};
-  selectStatus: any = {};
   listFile: any = [];
+  fileProfile: any = {};
 
+  companyForm: FormGroup;
   pathEnvironment = environment.API_URL;
 
   constructor(
     private messageService: MessageService,
-    private service: AdminService
-  ) {}
+    private service: AdminService,
+    private fb: FormBuilder,
+  ) {
+    this.companyForm = this.fb.group({
+      companyID: [null],
+      companyName: [null, [Validators.required]],
+      introduce: [null],
+      email: [null],
+      phone: [null],
+      province: [null],
+      address: [null],
+      field: [null],
+      avatar: [null],
+      corporateTaxCode: [null, [Validators.required]],
+      status: [null, [Validators.required]],
+    });
+  }
 
   ngOnInit() {
-    // Default remove inactive
-    this.LIST_STATUS = this.LIST_STATUS.filter(
-      (item: any) => item.CODE !== 'IN_ACTIVE'
-    );
+
   }
 
   onHideDialog() {
@@ -54,18 +64,23 @@ export class DialogCompanyComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.selectStatus = this.LIST_STATUS.find(
-      (item: any) => item.CODE === this.data.status
-    );
-    this.selectProvince = this.LIST_PROVINCE.find(
-      (item: any) => item.CODE === this.data.province
-    );
-    this.selectField = this.LIST_FIELD.find(
-      (item: any) => item.CODE === this.data.field
-    );
-    this.selectScale = this.LIST_SCALE.find(
-      (item: any) => item.CODE === this.data.scale
-    );
+    this.companyForm.patchValue({
+      companyID: this.data.companyID,
+      introduce: this.data.introduce,
+      email: this.data.email,
+      phone: this.data.phone,
+      province: this.data.province,
+      address: this.data.address,
+      field: this.data.field,
+      avatar: this.data.avatar,
+      corporateTaxCode: this.data.corporateTaxCode,
+      status: this.data.status,
+    })
+  }
+
+  isFieldValid(fieldName: string, formGroup: FormGroup): boolean {
+    const field = formGroup.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
   onFileSelected(event: any) {
@@ -81,6 +96,7 @@ export class DialogCompanyComponent implements OnInit {
       this.service.upload(payload, files).subscribe(
         (result: any) => {
           if (result.status === SETTING.SYSTEM_HTTP_STATUS.OK) {
+            this.listFile = [];
             resolve(result.data);
           } else {
             reject(new Error('Upload failed'));
@@ -98,92 +114,24 @@ export class DialogCompanyComponent implements OnInit {
     });
   }
 
-  private validInput(): boolean {
-    let errorMessage = '';
-
-    if (isEmpty(this.data.name)) {
-      errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_COMPANY_NAME_FORMAT;
-    } else if (isEmpty(this.selectStatus)) {
-      errorMessage = SETTING.SYSTEM_HTTP_MESSAGE.INVALID_STATUS;
-    } else if (isEmpty(this.data.corporateTaxCode)) {
-      errorMessage =
-        SETTING.SYSTEM_HTTP_MESSAGE.INVALID_COMPANY_CORPORATE_TAX_CODE;
-    }
-
-    if (!isEmpty(errorMessage)) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: errorMessage,
-      });
-      return false;
-    }
-
-    return true;
-  }
-
-  public async onCreateUser(): Promise<void> {
-    const createdBy = removeQuotes(getFromLocalStorage('userID'));
-
-    let listFile = [];
-
+  public async onCreateCompany (): Promise<void> {
     if (this.listFile.length > 0) {
-      listFile = await this.uploadFile({ userID: createdBy }, this.listFile);
+      this.fileProfile = await this.uploadFile({ }, this.listFile);
     }
 
-    if (this.validInput()) {
-      this.data = trimStringObject(this.data);
-
-      const payload = {
-        name: this.data.name || '',
-        introduce: this.data.introduce || '',
-        email: this.data.email || '',
-        phone: this.data.phone || '',
-        province: this.selectProvince?.CODE || '',
-        address: this.data.address || '',
-        field: this.selectField?.CODE || '',
-        logo: listFile[0]?.filePath || this.data.logo || '',
-        scale: this.selectScale?.CODE || 0,
-        corporateTaxCode: this.data.corporateTaxCode || '',
-        website: this.data.website || '',
-        status: this.selectStatus.CODE || this.data.status,
-        createdBy: createdBy,
-      };
-      this.apiCreate(payload);
+    if (this.companyForm.valid) {
+      this.fileProfile ? this.companyForm.get('avatar')?.setValue(this.fileProfile['filePath']) : '';
+      this.apiCreate(this.companyForm.value);
     }
   }
 
-  public async onUpdateUser(): Promise<void> {
-    const updatedBy = removeQuotes(getFromLocalStorage('userID'));
-    let listFile = [];
-
+  public async onUpdateCompany(): Promise<void> {
     if (this.listFile.length > 0) {
-      listFile = await this.uploadFile(
-        { companyID: this.data.companyID },
-        this.listFile
-      );
+      this.fileProfile = await this.uploadFile({ }, this.listFile);
     }
-
-    if (this.validInput()) {
-      this.data = trimStringObject(this.data);
-      const payload = {
-        companyID: this.data.companyID,
-        name: this.data.name || '',
-        introduce: this.data.introduce || '',
-        email: this.data.email || '',
-        phone: this.data.phone || '',
-        province: this.selectProvince?.CODE || '',
-        address: this.data.address || '',
-        field: this.selectField?.CODE || '',
-        logo: listFile[0]?.filePath || this.data.logo || '',
-        scale: this.selectScale?.CODE || 0,
-        corporateTaxCode: this.data.corporateTaxCode || '',
-        website: this.data.website || '',
-        status: this.selectStatus.CODE || this.data.status,
-        updatedBy: updatedBy,
-      };
-
-      this.apiUpdate(payload);
+    if (this.companyForm.valid) {
+      this.fileProfile ? this.companyForm.get('avatar')?.setValue(this.fileProfile['filePath']) : '';
+      this.apiUpdate(this.companyForm.value);
     }
   }
 

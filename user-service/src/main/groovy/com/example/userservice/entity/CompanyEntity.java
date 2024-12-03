@@ -56,10 +56,6 @@ public class CompanyEntity implements Serializable {
     @Column(name = "avatar", length = 255)
     private String avatar;
 
-    @Min(value = 1, message = "Scale should not be less than 1")
-    @Column(name = "scale", columnDefinition = "SMALLINT")
-    private Integer scale;
-
     @NotBlank(message = "Scale should not be less than 1")
     @Pattern(regexp = REX_NUMBER, message = "CorporateTaxCode number format is invalid")
     @Column(name = "corporateTaxCode", length = 100, unique = true, nullable = false)

@@ -42,8 +42,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public ResponseEntity<HandleResponse> deleteCompanyByID(String companyID) {
-        CompanyEntity companyEntity = companyRepository.findCompanyByID(companyID);
+    public ResponseEntity<HandleResponse> deleteCompanyByID(CompanyDto companyDto) {
+        CompanyEntity companyEntity = companyRepository.findCompanyByID(companyDto.getCompanyID());
         if (companyEntity != null) {
             companyRepository.delete(companyEntity);
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), DELETE_SUCCESS));
@@ -53,23 +53,23 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public ResponseEntity<HandleResponse> updateCompanyByID(CompanyDto companyDto) {
-        CompanyEntity companyExit = companyRepository.findCompanyByID(companyDto.getCompanyID());
-        if (companyExit == null) {
+        CompanyEntity companyEntity = companyRepository.findCompanyByID(companyDto.getCompanyID());
+        if (companyEntity == null) {
             return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), COMPANY_NOT_EXIT));
         }
 
-        if (!companyExit.getCorporateTaxCode().equals(companyDto.getCorporateTaxCode())) {
+        if (!companyEntity.getCorporateTaxCode().equals(companyDto.getCorporateTaxCode())) {
             CompanyEntity companyCorporateTaxCode = companyRepository.findCompanyByCorporateTaxCode(companyDto.getCorporateTaxCode());
             if (companyCorporateTaxCode != null) {
                 return ResponseEntity.badRequest().body(new HandleResponse<>(HttpStatus.BAD_REQUEST.value(), CORPORATE_TAX_CODE_EXIT));
             }
-            companyExit.setCorporateTaxCode(companyDto.getCorporateTaxCode());
+            companyEntity.setCorporateTaxCode(companyDto.getCorporateTaxCode());
         }
 
-        companyExit.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        companyExit.setUpdatedBy(companyDto.getUpdatedBy());
+        companyEntity = ReflectionMapper.map(companyDto, CompanyEntity.class);
+        companyEntity.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-        companyRepository.save(companyExit);
+        companyRepository.save(companyEntity);
         return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), UPDATE_SUCCESS));
     }
 
