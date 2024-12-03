@@ -23,6 +23,7 @@ export const SETTING = {
     AUTH_REGISTER: 'register',
     AUTH_LOGIN: 'login',
     AUTH_LOGOUT: 'logout',
+    AUTH_FORGOT_PASSWORD: 'forgot-password',
 
     // TODO: Url for related pages
     DASHBOARD: 'dashboard',
@@ -30,7 +31,7 @@ export const SETTING = {
     MANAGER_COMPANY: 'manager-company',
     MANAGER_BLOG: 'manager-blog',
     MANAGER_NOTIFICATION: 'manager-notification',
-    MANAGER_SERVICE_PACK: 'manager-services-pack',
+    MANAGER_SERVICE_PACK: 'manager-service-pack',
     MANAGER_ORDER_APPROVAL: 'manager-order-approval',
     MANAGER_CART: 'manager-cart',
     MANAGER_HISTORY: 'manager-history',
@@ -40,6 +41,7 @@ export const SETTING = {
     MANAGER_REPORT: 'manager-report'
   },
   SYSTEM_ROLE: {
+    // SUPER_ADMIN: 'SUPER_ADMIN',
     ROLE_ADMIN: 'ROLE_ADMIN',
     ROLE_CANDIDATE: 'ROLE_CANDIDATE',
     ROLE_EMPLOYER: 'ROLE_EMPLOYER',

@@ -1,38 +1,35 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MessageService} from 'primeng/api';
+import { Component } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { AuthService } from '../auth.service';
 import {
-  login, loginFailure, loginSuccess, setUser,
-} from '../../ngrx/actions/user.action';
-import {SETTING} from '../../core/configs/setting.config';
-import {Actions, ofType} from "@ngrx/effects";
-import {Router} from "@angular/router";
-import {Store} from "@ngrx/store";
+  getFromLocalStorage,
+  isEmail,
+  isEmpty,
+  isPassword, removeQuotes,
+  saveToLocalStorage,
+} from '../../core/commons/func';
+import { SETTING } from '../../core/configs/setting.config';
+import { Router } from '@angular/router';
+import { LoadingService } from '../../core/services/loading.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {LoadingService} from "../../ngrx/services/loading.service";
-import {Subscription} from "rxjs";
-import {UserStore} from "../../ngrx/stores/user.store";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent {
+  loginForm: FormGroup;
+  isLoading = false;
   SYSTEM_PAGE = SETTING.SYSTEM_PAGE;
   SYSTEM_ROLE = SETTING.SYSTEM_ROLE;
-  loginForm: FormGroup;
-  isLoading: boolean = false;
-  private loadingSubscription: Subscription | undefined;
-  private loginSuccessSubscription: Subscription | undefined;
-  private loginFailureSubscription: Subscription | undefined;
 
   constructor(
-    private actions$: Actions,
     private messageService: MessageService,
+    private authService: AuthService,
     private router: Router,
-    private store: Store<UserStore>,
-    private fb: FormBuilder,
     private loadingService: LoadingService,
+    private fb: FormBuilder,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -40,74 +37,64 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.loadingSubscription = this.loadingService.loading$.subscribe((loading) => {
-      this.isLoading = loading;
-    });
-
-    this.loginSuccessSubscription = this.actions$.pipe(ofType(loginSuccess)).subscribe((response) => {
-      this.loadingService.setLoading(false);
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: response.message
-      });
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('refreshToken', response.refreshToken);
-
-      this.store.dispatch(setUser({
-        data: response?.data,
-        token: response?.token,
-        refreshToken: response?.refreshToken
-      }));
-      if (response.data.role === this.SYSTEM_ROLE.ROLE_ADMIN) {
-        this.onNextPage(this.SYSTEM_PAGE.RELATED_ADMIN + '/' + this.SYSTEM_PAGE.DASHBOARD);
-      }
-      if (response.data.role === this.SYSTEM_ROLE.ROLE_EMPLOYER) {
-        this.onNextPage(this.SYSTEM_PAGE.RELATED_EMPLOYER + '/' + this.SYSTEM_PAGE.DASHBOARD);
-      }
-      if (response.data.role === this.SYSTEM_ROLE.ROLE_CANDIDATE) {
-        this.onNextPage(this.SYSTEM_PAGE.RELATED_CANDIDATE + '/' + this.SYSTEM_PAGE.DASHBOARD);
-      }
-    });
-
-    this.loginFailureSubscription = this.actions$.pipe(ofType(loginFailure)).subscribe((response) => {
-      this.loadingService.setLoading(false);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: response.error ? response.error.message : "Hệ thống xảy ra lỗi",
-      });
-    });
-  }
-
-  onNextPage(key: string): void {
-    this.router.navigate([key]);
-  }
-
   isFieldValid(field: string): boolean {
     return this.loginForm.controls[field].invalid && this.loginForm.controls[field].touched;
   }
 
-  onLogin(): void {
-    if (this.loginForm.valid) {
-      this.loadingService.setLoading(true);
-      const {email, password} = this.loginForm.value;
-      this.store.dispatch(login({email, password}));
-    } else {
-      this.messageService.add({severity: 'error', summary: 'Lỗi', detail: 'Vui lòng kiểm tra lại thông tin!'});
-    }
+  public onNextPage(key: string): void {
+    this.router.navigate([key]);
   }
 
-  ngOnDestroy(): void {
-    if (this.loadingSubscription) {
-      this.loadingSubscription.unsubscribe();
-    }
-    if (this.loginSuccessSubscription) {
-      this.loginSuccessSubscription.unsubscribe();
-    }
-    if (this.loginFailureSubscription) {
-      this.loginFailureSubscription.unsubscribe();
-    }
+  public onLogin(): void {
+    let payload = this.loginForm.value;
+    this.loadingService.show();
+    this.isLoading = true;
+    this.authService.login(payload).subscribe(
+      (result: any) => {
+        if (result.status === SETTING.SYSTEM_HTTP_STATUS.OK) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: result.message,
+          });
+          setTimeout(() => {
+            this.loadingService.hide();
+            saveToLocalStorage('userID', result.data['userID']);
+            saveToLocalStorage('email', result.data['email']);
+            saveToLocalStorage('role', result.data['role']);
+
+            saveToLocalStorage('token', result['token']);
+            saveToLocalStorage('refreshToken', result['refreshToken']);
+
+            if (removeQuotes(getFromLocalStorage('role')) === this.SYSTEM_ROLE.ROLE_ADMIN) {
+              this.onNextPage(
+                this.SYSTEM_PAGE.RELATED_ADMIN + '/' + this.SYSTEM_PAGE.MANAGER_ORDER_APPROVAL
+              );
+            }
+
+            if (removeQuotes(getFromLocalStorage('role')) === this.SYSTEM_ROLE.ROLE_EMPLOYER) {
+              this.onNextPage(
+                this.SYSTEM_PAGE.RELATED_EMPLOYER + '/' + this.SYSTEM_PAGE.DASHBOARD
+              );
+            }
+
+            if (removeQuotes(getFromLocalStorage('role')) === this.SYSTEM_ROLE.ROLE_CANDIDATE) {
+              this.onNextPage(
+                this.SYSTEM_PAGE.RELATED_CANDIDATE + '/' + this.SYSTEM_PAGE.DASHBOARD
+              );
+            }
+
+          }, 500);
+        }
+      },
+      (error: any) => {
+        this.loadingService.hide();
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.massage || error.error.message,
+        });
+      }
+    );
   }
 }

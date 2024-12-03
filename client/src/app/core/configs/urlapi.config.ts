@@ -1,9 +1,7 @@
 export enum UrlApi {
   // auth
   AUTH_LOGIN = `api/auth/login`,
-  AUTH_VERIFY_CODE = `api/auth/verify-code`,
-  AUTH_REGISTER = `api/auth/register`,
-  AUTH_FORGOT_PASSWORD = `api/auth/forgot-password`,
+  AUTH_SIGNUP = `api/auth/signup`,
 
   // role
   ADMIN_GET_ALL_ROLE = `api/role/get-all`,
@@ -12,40 +10,25 @@ export enum UrlApi {
   CREATE_COMPANY = `api/company/create`,
   UPDATE_COMPANY = `api/company/update`,
   DELETE_COMPANY = `api/company/delete`,
-  GET_ALL_COMPANY = `api/company/get-all`,
+  GET_ALL_COMPANY = `api/company/all`,
   GET_ALL_HEADER_COMPANY = `api/company/get-all-header`,
   GET_BY_ID_COMPANY = `api/company/get-by-id`,
-  FOLLOW_COMPANY = `api/company/follow`,
-  LOCK_COMPANY = `api/company/lock`,
 
   // user
-  ADMIN_CREATE_USER = `api/admin/user/create`,
-  ADMIN_UPDATE_USER = `api/admin/user/update`,
-  ADMIN_DELETE_USER = `api/admin/user/delete`,
-  ADMIN_RESET_PASSWORD_USER = `api/admin/user/reset-password`,
-  ADMIN_GET_ALL_USER = `api/admin/user/get-all`,
-  ADMIN_GET_BY_ID_USER = `api/admin/user/get-by-id`,
-  ADMIN_LOCK_USER = `api/admin/user/lock`,
-  ADMIN_CHANGE_PASSWORD = `api/admin/user/change-password`,
-
-  // blog
-  CREATE_BLOG = `api/blog/create`,
-  UPDATE_BLOG = `api/blog/update`,
-  DELETE_BLOG = `api/blog/delete`,
-  GET_ALL_BLOG = `api/blog/get-all`,
-  STATUS_BLOG = `api/blog/status`,
-  VIEW_BLOG = `api/blog/view`,
-  GET_BY_ID_BLOG = `api/blog/get-by-id`,
+  CREATE_USER = `api/user/create`,
+  UPDATE_USER = `api/user/update`,
+  DELETE_USER = `api/user/delete`,
+  GET_ALL_USER = `api/user/all`,
+  GET_BY_ID_USER = `api/user/get-by-id`,
 
   // upload
-  STORE_UPLOAD = 'api/store/upload',
-  STORE_GET_FILE = 'api/store/files',
-  STORE_DOWNLOAD_FILE = 'api/store/download',
+  FILE_UPLOAD = 'api/file/upload',
+  FILE_DOWNLOAD = 'api/file/download',
 
   // send notification email
   SEND_NOTIFICATION_EMAIL = 'api/notification/send-content-email',
 
-  // services pack
+  // service pack
   CREATE_SERVICE_PACK = `api/service-pack/create`,
   UPDATE_SERVICE_PACK = `api/service-pack/update`,
   DELETE_SERVICE_PACK = `api/service-pack/delete`,

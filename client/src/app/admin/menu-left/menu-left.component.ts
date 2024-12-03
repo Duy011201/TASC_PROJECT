@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
-import {SETTING} from '../../core/configs/setting.config';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { SETTING } from '../../core/configs/setting.config';
+import { Router } from '@angular/router';
+import {getFromLocalStorage, removeQuotes} from "../../core/commons/func";
 import {environment} from "../../core/environments/develop.environment";
 
 @Component({
@@ -11,15 +12,12 @@ import {environment} from "../../core/environments/develop.environment";
 })
 export class MenuLeftComponent {
   SYSTEM_PAGE = SETTING.SYSTEM_PAGE;
-  email = ""
-  avatar = ""
+  email = removeQuotes(getFromLocalStorage('email'))
   pathEnvironment = environment.API_URL;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public onNextPage(key: string): void {
     this.router.navigate([key]);

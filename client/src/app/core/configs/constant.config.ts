@@ -214,13 +214,11 @@ export const CONSTANT = {
   SYSTEM_STATUS: [
     { CODE: 'ACTIVE', NAME: 'Hoạt động' },
     { CODE: 'IN_ACTIVE', NAME: 'Không hoạt động' },
-    { CODE: 'LOCK', NAME: 'Khóa' },
   ],
   SYSTEM_ROLE: [
-    // { CODE: 'SUPER_ADMIN', NAME: 'SUPER_ADMIN' },
-    { CODE: 'ADMIN', NAME: 'ADMIN' },
-    { CODE: 'CANDIDATE', NAME: 'Ứng viên' },
-    { CODE: 'EMPLOYER', NAME: 'Nhà tuyển dụng' },
+    { CODE: 'ROLE_ADMIN', NAME: 'ADMIN' },
+    { CODE: 'ROLE_CANDIDATE', NAME: 'Ứng viên' },
+    { CODE: 'ROLE_EMPLOYER', NAME: 'Nhà tuyển dụng' },
   ],
   BLOG_STATUS: [
     { CODE: 'PENDING', NAME: 'Đang chờ duyệt' },

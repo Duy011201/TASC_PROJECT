@@ -2,37 +2,39 @@
           [style]="{ width: '60rem' }" (onHide)="onHideDialog()">
   <span class="p-text-secondary block mb-5">{{ data.subHeaderDialog }} </span>
 
-  <div class="grid col" [style.pointer-events]="data.actionDialog === SYSTEM_ACTION.VIEW ? 'none' : 'auto'">
+  <form [formGroup]="userForm" class="grid col"
+        [style.pointer-events]="data.actionDialog === SYSTEM_ACTION.VIEW ? 'none' : 'auto'">
     <div class="col-7 flex flex-column gap-4">
       <div class="flex flex-column gap-2">
         <label for="username" class="font-semibold">Username</label>
-        <input pInputText id="username" class="flex-auto" [(ngModel)]="data.username"/>
+        <input pInputText id="username" class="flex-auto" formControlName="username"/>
       </div>
 
-      <div class="flex flex-wrap justify-content-between">
-        <div class="flex flex-column gap-2" [style]="{ width: '48%' }">
-          <label for="email" class="font-semibold">Email<span class="pl-2 text-red-600">*</span></label>
-          <input pInputText id="email" class="flex-auto" [(ngModel)]="data.email"/>
+      <div class="flex flex-column gap-2">
+        <label for="email" class="font-semibold">Email<span class="pl-2 text-red-600">*</span></label>
+        <input pInputText id="email" class="flex-auto" formControlName="email"/>
+        <div *ngIf="isFieldValid('email', userForm)" class="error-message text-red-500">Email là bắt buộc
         </div>
+      </div>
 
-        <div class="flex flex-column gap-2" [style]="{ width: '48%' }">
-          <label for="phone" class="font-semibold">Phone</label>
-          <input pInputText id="phone" class="flex-auto" [(ngModel)]="data.phone"/>
-        </div>
+      <div class="flex flex-column gap-2">
+        <label for="phone" class="font-semibold">Phone</label>
+        <input pInputText id="phone" class="flex-auto" formControlName="phone"/>
       </div>
 
       <div class="flex flex-wrap justify-content-between">
         <div class="flex flex-column gap-2" [style]="{ width: '48%' }">
           <label for="status" class="font-semibold">Trạng thái<span class="pl-2 text-red-600">*</span></label>
-          <p-dropdown id="status" [options]="LIST_STATUS" [(ngModel)]="selectStatus" placeholder="Chọn trạng thái"
-                      optionLabel="NAME" [showClear]="true" [style]="{ width: '100%' }">
+          <p-dropdown id="status" [options]="LIST_STATUS" [optionValue]="'CODE'" formControlName="status"
+                      placeholder="Chọn trạng thái" optionLabel="NAME" [showClear]="true" [style]="{ width: '100%' }">
           </p-dropdown>
         </div>
 
-        <div *ngIf="data.actionDialog === SYSTEM_ACTION.CREATE" class="flex flex-column gap-2"
+        <div class="flex flex-column gap-2"
              [style]="{ width: '48%' }">
           <label for="role" class="font-semibold">Quyền<span class="pl-2 text-red-600">*</span></label>
-          <p-dropdown id="role" [options]="LIST_ROLE" [(ngModel)]="selectRole" placeholder="Chọn quyền"
+          <p-dropdown id="role" [options]="LIST_ROLE" [optionValue]="'CODE'"
+                      formControlName="role" placeholder="Chọn quyền"
                       optionLabel="NAME" [showClear]="true" [style]="{ width: '100%' }">
           </p-dropdown>
         </div>
@@ -40,9 +42,10 @@
 
       <div class="flex flex-column gap-2">
         <label for="company" class="font-semibold">Công ty</label>
-        <p-dropdown id="company" [options]="listCompany" [(ngModel)]="selectCompany" placeholder="Chọn công ty"
+        <p-dropdown id="company" [options]="listCompany" formControlName="companyID" placeholder="Chọn công ty"
+                    [optionValue]="'companyID'"
                     [disabled]="data.roleName === SYSTEM_ROLE.ADMIN || data.roleName === SYSTEM_ROLE.CANDIDATE"
-                    optionLabel="name" [showClear]="true" [style]="{ width: '100%' }">
+                    optionLabel="companyName" [showClear]="true" [style]="{ width: '100%' }">
         </p-dropdown>
       </div>
     </div>
@@ -56,10 +59,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
   <div *ngIf="data.actionDialog !== SYSTEM_ACTION.VIEW" class="flex justify-content-end gap-2 mt-3">
     <p-button label="Cancel" severity="secondary" (click)="onHideDialog()"></p-button>
-<!--    <p-button *ngIf="data.actionDialog === SYSTEM_ACTION.CREATE" label="Create" (click)="onCreateUser()"></p-button>-->
-<!--    <p-button *ngIf="data.actionDialog === SYSTEM_ACTION.UPDATE" label="Save" (click)="onUpdateUser()"></p-button>-->
+    <p-button *ngIf="data.actionDialog === SYSTEM_ACTION.CREATE" label="Create" (click)="onCreateUser()"></p-button>
+    <p-button *ngIf="data.actionDialog === SYSTEM_ACTION.UPDATE" label="Save" (click)="onUpdateUser()"></p-button>
   </div>
 </p-dialog>

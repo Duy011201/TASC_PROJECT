@@ -1,15 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, MessageService} from 'primeng/api';
-import {Table} from 'primeng/table';
-import {SETTING} from '../../core/configs/setting.config';
-import {environment} from '../../core/environments/develop.environment';
-import {CONSTANT} from '../../core/configs/constant.config';
-import {LoadingService} from "../../ngrx/services/loading.service";
-import {getAllUser} from "../../ngrx/actions/user.action";
-import {Store} from "@ngrx/store";
-import {UserStore} from "../../ngrx/stores/user.store";
-import {selectAllUser, selectAllError, selectAllLoading} from "../../ngrx/selectors/user.selector";
-import {Observable, skip, take, tap} from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
+import { SETTING } from '../../core/configs/setting.config';
+import { AdminService } from '../admin.service';
+import { environment } from '../../core/environments/develop.environment';
+import { CONSTANT } from '../../core/configs/constant.config';
+import { LoadingService } from '../../core/services/loading.service';
+import {getFromLocalStorage, removeQuotes} from "../../core/commons/func";
 
 @Component({
   selector: 'app-admin-user',
@@ -25,11 +22,10 @@ export class UserComponent implements OnInit {
 
   constructor(
     private messageService: MessageService,
+    private service: AdminService,
     private confirmationService: ConfirmationService,
-    private loadingService: LoadingService,
-    private store: Store<UserStore>,
-  ) {
-  }
+    private loadingService: LoadingService
+  ) {}
 
   dataDialog: any = {
     actionDialog: '',
@@ -38,24 +34,11 @@ export class UserComponent implements OnInit {
   };
   listUser: any = [];
   visible: boolean = false;
-  isLoading: boolean = true;
+  loading: boolean = true;
+  pathEnvironment = environment.API_URL;
 
   ngOnInit() {
-    this.store.dispatch(getAllUser());
-
-    this.store.select(selectAllUser).pipe(skip(1), take(1)).subscribe((res, ) => {
-      // @ts-ignore
-      this.listUser = res.data;
-    });
-    this.store.select(selectAllLoading).subscribe((isLoading) => {
-      if (isLoading) {
-        this.loadingService.setLoading(true);
-        this.isLoading = true;
-      } else {
-        this.loadingService.setLoading(false);
-        this.isLoading = false;
-      }
-    });
+    this.apiGetAll();
   }
 
   clear(table: Table) {
@@ -63,7 +46,7 @@ export class UserComponent implements OnInit {
   }
 
   onShowDialog(action: string, data: any): void {
-    this.dataDialog = {...data};
+    this.dataDialog = { ...data };
 
     switch (action) {
       case this.SYSTEM_ACTION.VIEW:
@@ -96,27 +79,9 @@ export class UserComponent implements OnInit {
       rejectIcon: 'none',
 
       accept: () => {
-        // this.apiDelete(user);
+        this.apiDelete(user);
       },
-      reject: () => {
-      },
-    });
-  }
-
-  confirmLock(event: Event, user: any, status: string) {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: `Are you sure that you want ${status === this.SYSTEM_STATUS.LOCK ? 'lock' : 'open'} user?`,
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-      rejectButtonStyleClass: 'p-button-text',
-      accept: () => {
-        // this.apiLock(user, status);
-      },
-      reject: () => {
-      },
+      reject: () => {},
     });
   }
 
@@ -129,6 +94,51 @@ export class UserComponent implements OnInit {
 
   handleVisibleChange(visible: boolean) {
     this.visible = visible;
-    // this.apiGetAll();
+    this.apiGetAll();
+  }
+
+  apiDelete(user: any) {
+    this.service.deleteUser({ userID: user.userID }).subscribe(
+      (result: any) => {
+        if (result.status === SETTING.SYSTEM_HTTP_STATUS.OK) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: result.message,
+          });
+          this.apiGetAll();
+        }
+      },
+      (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.massage || error.error.message,
+        });
+      }
+    );
+  }
+
+  apiGetAll() {
+    this.loadingService.show();
+    this.service.getAllUser({}).subscribe(
+      (result: any) => {
+        if (result.status === SETTING.SYSTEM_HTTP_STATUS.OK) {
+          setTimeout(() => {
+            this.loadingService.hide();
+            this.listUser = result.data;
+            this.loading = false;
+          }, 500);
+        }
+      },
+      (error: any) => {
+        this.loadingService.hide();
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.massage || error.error.message,
+        });
+      }
+    );
   }
 }

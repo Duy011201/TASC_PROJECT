@@ -9,7 +9,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import {RequestApiService} from '../core/services/request-api.service';
 import {QuillModule} from 'ngx-quill';
 import {HttpClientModule} from '@angular/common/http';
-import {LoadingService} from '../ngrx/services/loading.service';
+import {LoadingService} from '../core/services/loading.service';
 import {DynamicPipe} from "../core/pipes/dynamic-pipe";
 
 @NgModule({
