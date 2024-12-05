@@ -60,10 +60,4 @@ public class UserEntity implements Serializable {
 
     @Column(name = "updatedAt", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Timestamp updatedAt = new Timestamp(System.currentTimeMillis());;
-
-    @Column(name = "createdBy", length = 36, nullable = false)
-    private String createdBy = "system";
-
-    @Column(name = "updatedBy", length = 36, nullable = false)
-    private String updatedBy = "system";
 }

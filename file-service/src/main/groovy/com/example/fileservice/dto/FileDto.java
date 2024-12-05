@@ -35,8 +35,4 @@ public class FileDto {
     private Timestamp createdAt;
 
     private Timestamp updatedAt = new Timestamp(System.currentTimeMillis());;
-
-    private String createdBy = "system";
-
-    private String updatedBy = "system";
 }

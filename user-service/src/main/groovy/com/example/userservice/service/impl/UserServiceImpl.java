@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
             userEntity.setRole(userDto.getRole());
             userEntity.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             userEntity.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-            userEntity.setCreatedBy(userEntity.getUserID());
             userRepository.save(userEntity);
             userDto.setUserID(userEntity.getUserID());
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), SING_UP_SUCCESS, userDto));

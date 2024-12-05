@@ -45,8 +45,4 @@ public class UserDto {
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
-
-    private String createdBy;
-
-    private String updatedBy;
 }

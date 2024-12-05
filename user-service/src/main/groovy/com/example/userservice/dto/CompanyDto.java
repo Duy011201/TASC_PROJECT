@@ -53,8 +53,4 @@ public class CompanyDto {
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
-
-    private String createdBy = "system";
-
-    private String updatedBy = "system";
 }

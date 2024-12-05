@@ -57,7 +57,6 @@ public class AuthServiceImpl implements AuthService {
             newUser.setRole(userDto.getRole());
             newUser.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             newUser.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-            newUser.setCreatedBy(newUser.getUserID());
             userRepository.save(newUser);
             userDto.setUserID(newUser.getUserID());
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), SING_UP_SUCCESS, userDto));

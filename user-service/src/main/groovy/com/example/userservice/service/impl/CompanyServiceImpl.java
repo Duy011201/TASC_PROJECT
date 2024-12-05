@@ -32,7 +32,6 @@ public class CompanyServiceImpl implements CompanyService {
             CompanyEntity companyEntity = ReflectionMapper.map(companyDto, CompanyEntity.class);
             companyEntity.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             companyEntity.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-            companyEntity.setCreatedBy(companyEntity.getCompanyID());
             companyRepository.save(companyEntity);
             companyDto.setCompanyID(companyEntity.getCompanyID());
             return ResponseEntity.ok(new HandleResponse<>(HttpStatus.OK.value(), ADD_SUCCESS, companyDto));
