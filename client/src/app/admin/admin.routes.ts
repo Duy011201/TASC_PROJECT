@@ -5,8 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SETTING } from '../core/configs/setting.config';
 import { CompanyComponent } from './company/company.component';
 import { NotificationComponent } from './notification/notification.component';
-import { ServicePackComponent } from './service-pack/service-pack.component';
-import { OrderApprovalComponent } from './order-approval/order-approval.component';
+import { PackageServiceComponent } from './package-service/package-service.component';
 import { RecruitmentComponent } from './recruitment/recruitment.component';
 
 export const routes: Routes = [
@@ -23,14 +22,10 @@ export const routes: Routes = [
   //   path: SETTING.SYSTEM_PAGE.MANAGER_NOTIFICATION,
   //   component: NotificationComponent,
   // },
-  // {
-  //   path: SETTING.SYSTEM_PAGE.MANAGER_SERVICE_PACK,
-  //   component: ServicePackComponent,
-  // },
-  // {
-  //   path: SETTING.SYSTEM_PAGE.MANAGER_ORDER_APPROVAL,
-  //   component: OrderApprovalComponent,
-  // },
+  {
+    path: SETTING.SYSTEM_PAGE.MANAGER_SERVICE_PACK,
+    component: PackageServiceComponent,
+  },
   // {
   //   path: SETTING.SYSTEM_PAGE.MANAGER_RECRUITMENT,
   //   component: RecruitmentComponent,

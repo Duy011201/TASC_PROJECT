@@ -31,7 +31,7 @@ export const SETTING = {
     MANAGER_COMPANY: 'manager-company',
     MANAGER_BLOG: 'manager-blog',
     MANAGER_NOTIFICATION: 'manager-notification',
-    MANAGER_SERVICE_PACK: 'manager-service-pack',
+    MANAGER_SERVICE_PACK: 'manager-package-service',
     MANAGER_ORDER_APPROVAL: 'manager-order-approval',
     MANAGER_CART: 'manager-cart',
     MANAGER_HISTORY: 'manager-history',

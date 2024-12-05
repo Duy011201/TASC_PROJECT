@@ -27,24 +27,10 @@
   </div>
 
   <div class="w-17rem p-3 border-round flex gap-3 card-item hover:text-white hover:shadow-1 bg-content"
-       (click)="onNextPage(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_BLOG)"
-       [ngClass]="{ active: isRouteActive(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_BLOG) }">
-    <i class="fa-solid fa-newspaper text-xl"></i>
-    <span>Quản lý bài viết</span>
-  </div>
-
-  <div class="w-17rem p-3 border-round flex gap-3 card-item hover:text-white hover:shadow-1 bg-content"
        (click)="onNextPage(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_RECRUITMENT)"
        [ngClass]="{ active: isRouteActive(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_RECRUITMENT) }">
     <i class="fa-solid fa-bullhorn text-xl"></i>
     <span>Quản lý tin tuyển dụng</span>
-  </div>
-
-  <div class="w-17rem p-3 border-round flex gap-3 card-item hover:text-white hover:shadow-1 bg-content"
-       (click)="onNextPage(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_ORDER_APPROVAL)"
-       [ngClass]="{ active: isRouteActive(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_ORDER_APPROVAL) }">
-    <i class="fa-solid fa-cart-shopping text-xl"></i>
-    <span>Quản lý gói dịch vụ đăng ký</span>
   </div>
 
   <div class="w-17rem p-3 border-round flex gap-3 card-item hover:text-white hover:shadow-1 bg-content"
@@ -59,19 +45,5 @@
        [ngClass]="{ active: isRouteActive(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_NOTIFICATION) }">
     <i class="fa-solid fa-bell text-xl"></i>
     <span>Quản lý thông báo người dùng</span>
-  </div>
-
-  <div class="w-17rem p-3 border-round flex gap-3 card-item hover:text-white hover:shadow-1 bg-content"
-       (click)="onNextPage(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_REPORT)"
-       [ngClass]="{ active: isRouteActive(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_REPORT) }">
-    <i class="fa-solid fa-chart-line text-xl"></i>
-    <span>Báo cáo thống kê</span>
-  </div>
-
-  <div class="w-17rem p-3 border-round flex gap-3 card-item hover:text-white hover:shadow-1 bg-content"
-       (click)="onNextPage(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_CHANGE_PASSWORD)"
-       [ngClass]="{ active: isRouteActive(SYSTEM_PAGE.RELATED_ADMIN + '/' + SYSTEM_PAGE.MANAGER_CHANGE_PASSWORD) }">
-    <i class="fa-solid fa-key text-xl"></i>
-    <span>Đổi mật khẩu</span>
   </div>
 </div>

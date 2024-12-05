@@ -118,10 +118,10 @@ export class DialogCompanyComponent implements OnInit {
   public async onCreateCompany (): Promise<void> {
     if (this.listFile.length > 0) {
       this.fileProfile = await this.uploadFile({ }, this.listFile);
+      this.fileProfile ? this.companyForm.get('avatar')?.setValue(this.fileProfile['filePath']) : '';
     }
 
     if (this.companyForm.valid) {
-      this.fileProfile ? this.companyForm.get('avatar')?.setValue(this.fileProfile['filePath']) : '';
       this.apiCreate(this.companyForm.value);
     }
   }
@@ -129,9 +129,9 @@ export class DialogCompanyComponent implements OnInit {
   public async onUpdateCompany(): Promise<void> {
     if (this.listFile.length > 0) {
       this.fileProfile = await this.uploadFile({ }, this.listFile);
+      this.fileProfile ? this.companyForm.get('avatar')?.setValue(this.fileProfile['filePath']) : '';
     }
     if (this.companyForm.valid) {
-      this.fileProfile ? this.companyForm.get('avatar')?.setValue(this.fileProfile['filePath']) : '';
       this.apiUpdate(this.companyForm.value);
     }
   }

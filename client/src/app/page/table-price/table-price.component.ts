@@ -82,7 +82,7 @@ export class TablePriceComponent implements OnInit {
   }
 
   apiGetAll() {
-    this.service.getAllServicePack({}).subscribe(
+    this.service.getAllPackageService({}).subscribe(
       (result: any) => {
         if (result.status === SETTING.SYSTEM_HTTP_STATUS.OK) {
           this.listService = result.data;

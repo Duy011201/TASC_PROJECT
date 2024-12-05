@@ -139,9 +139,9 @@ export class AdminService {
       );
   }
 
-  public getAllServicePack(body: object) {
+  public getAllPackageService(body: object) {
     return this._requestApiService
-      .postApiHeader(`${UrlApi.GET_ALL_SERVICE_PACK}`, body)
+      .postApiHeader(`${UrlApi.GET_ALL_PACKAGE_SERVICE}`, body)
       .pipe(
         map((res) => {
           return res;
@@ -149,9 +149,9 @@ export class AdminService {
       );
   }
 
-  public updateServicePack(body: object) {
+  public updatePackageService(body: object) {
     return this._requestApiService
-      .postApiHeader(`${UrlApi.UPDATE_SERVICE_PACK}`, body)
+      .postApiHeader(`${UrlApi.UPDATE_PACKAGE_SERVICE}`, body)
       .pipe(
         map((res) => {
           return res;
@@ -159,9 +159,9 @@ export class AdminService {
       );
   }
 
-  public createServicePack(body: object) {
+  public createPackageService(body: object) {
     return this._requestApiService
-      .postApiHeader(`${UrlApi.CREATE_SERVICE_PACK}`, body)
+      .postApiHeader(`${UrlApi.CREATE_PACKAGE_SERVICE}`, body)
       .pipe(
         map((res) => {
           return res;
@@ -169,9 +169,9 @@ export class AdminService {
       );
   }
 
-  public deleteServicePack(body: object) {
+  public deletePackageService(body: object) {
     return this._requestApiService
-      .postApiHeader(`${UrlApi.DELETE_SERVICE_PACK}`, body)
+      .postApiHeader(`${UrlApi.DELETE_PACKAGE_SERVICE}`, body)
       .pipe(
         map((res) => {
           return res;

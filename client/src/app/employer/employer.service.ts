@@ -149,46 +149,6 @@ export class EmployerService {
       );
   }
 
-  public getAllServicePack(body: object) {
-    return this._requestApiService
-      .postApiHeader(`${UrlApi.GET_ALL_SERVICE_PACK}`, body)
-      .pipe(
-        map((res) => {
-          return res;
-        })
-      );
-  }
-
-  public updateServicePack(body: object) {
-    return this._requestApiService
-      .postApiHeader(`${UrlApi.UPDATE_SERVICE_PACK}`, body)
-      .pipe(
-        map((res) => {
-          return res;
-        })
-      );
-  }
-
-  public createServicePack(body: object) {
-    return this._requestApiService
-      .postApiHeader(`${UrlApi.CREATE_SERVICE_PACK}`, body)
-      .pipe(
-        map((res) => {
-          return res;
-        })
-      );
-  }
-
-  public deleteServicePack(body: object) {
-    return this._requestApiService
-      .postApiHeader(`${UrlApi.DELETE_SERVICE_PACK}`, body)
-      .pipe(
-        map((res) => {
-          return res;
-        })
-      );
-  }
-
   public getAllProduct(body: object) {
     return this._requestApiService
       .postApiHeader(`${UrlApi.GET_ALL_PRODUCT}`, body)

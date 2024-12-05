@@ -29,10 +29,10 @@ export enum UrlApi {
   SEND_NOTIFICATION_EMAIL = 'api/notification/send-content-email',
 
   // service pack
-  CREATE_SERVICE_PACK = `api/service-pack/create`,
-  UPDATE_SERVICE_PACK = `api/service-pack/update`,
-  DELETE_SERVICE_PACK = `api/service-pack/delete`,
-  GET_ALL_SERVICE_PACK = `api/service-pack/get-all`,
+  CREATE_PACKAGE_SERVICE = `api/package-service/create`,
+  UPDATE_PACKAGE_SERVICE = `api/package-service/update`,
+  DELETE_PACKAGE_SERVICE = `api/package-service/delete`,
+  GET_ALL_PACKAGE_SERVICE = `api/package-service/all`,
 
   // product
   CREATE_PRODUCT = `api/product/create`,

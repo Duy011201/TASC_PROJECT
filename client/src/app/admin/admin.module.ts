@@ -7,9 +7,8 @@ import {CompanyComponent} from './company/company.component';
 import {DialogUserComponent} from './user/dialog/dialog.component';
 import {DialogCompanyComponent} from './company/dialog/dialog.component';
 import {NotificationComponent} from './notification/notification.component';
-import {ServicePackComponent} from './service-pack/service-pack.component';
-import {DialogServiceDialogComponent} from './service-pack/dialog/dialog.component';
-import {OrderApprovalComponent} from './order-approval/order-approval.component';
+import {PackageServiceComponent} from './package-service/package-service.component';
+import {DialogServiceDialogComponent} from './package-service/dialog/dialog.component';
 import {SharedModule} from '../share/share.module';
 import {RecruitmentComponent} from './recruitment/recruitment.component';
 import {DialogRecruitmentComponent} from './recruitment/dialog/dialog.component';
@@ -24,9 +23,8 @@ import {SkeletonModule} from "primeng/skeleton";
     CompanyComponent,
     DialogCompanyComponent,
     NotificationComponent,
-    ServicePackComponent,
+    PackageServiceComponent,
     DialogServiceDialogComponent,
-    OrderApprovalComponent,
     RecruitmentComponent,
     DialogRecruitmentComponent,
   ],
