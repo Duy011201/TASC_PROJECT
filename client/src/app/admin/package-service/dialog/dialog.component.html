@@ -1,0 +1,58 @@
+<p-dialog class="prevent-select" [header]="data.headerDialog" [modal]="true" [(visible)]="visible"
+  [style]="{ width: '60rem' }" (onHide)="onHideDialog()">
+  <span class="p-text-secondary block mb-5">{{ data.subHeaderDialog }} </span>
+
+  <form [formGroup]="pakageServiceForm" class="grid col" [style.pointer-events]="data.actionDialog === SYSTEM_ACTION.VIEW ? 'none' : 'auto'">
+    <div class="col-12 flex flex-column gap-2">
+      <label for="name" class="font-semibold">Tên gói dịch vụ<span class="pl-2 text-red-600">*</span></label>
+      <input pInputText id="name" class="flex-auto" formControlName="packageServiceName" placeholder="Nhập tên gói dịch vụ" />
+      <div *ngIf="isFieldValid('packageServiceName', pakageServiceForm)" class="error-message text-red-500">Tên gói dịch vụ là bắt buộc
+      </div>
+    </div>
+
+    <div class="col-12 flex flex-column gap-2">
+      <label for="promotion" class="font-semibold">Khuyến mãi (%)<span class="pl-2 text-red-600">*</span></label>
+      <p-inputNumber [min]="0" [max]="100" id="promotion" class="flex-auto" [style]="{ width: '100%' }" formControlName="promotion" placeholder="Nhập khuyến mãi"></p-inputNumber>
+      <div *ngIf="isFieldValid('promotion', pakageServiceForm)" class="error-message text-red-500">Khuyến mãi là bắt buộc
+      </div>
+    </div>
+
+    <div class="col-12 flex flex-column gap-2">
+      <label for="price" class="font-semibold">Giá gói (VNĐ)<span class="pl-2 text-red-600">*</span></label>
+      <p-inputNumber [min]="0" id="price" class="flex-auto w-full" [style]="{ width: '100%' }"
+                     formControlName="price" placeholder="Nhập giá gói dịch vụ"></p-inputNumber>
+      <div *ngIf="isFieldValid('price', pakageServiceForm)" class="error-message text-red-500">Giá gói là bắt buộc
+      </div>
+    </div>
+
+    <div class="col-12 flex flex-column gap-2">
+      <label for="expirationDate" class="font-semibold">Thời gian hết hạn (ngày)<span class="pl-2 text-red-600">*</span></label>
+      <p-inputNumber [min]="0" [max]="100" id="expirationDate" class="flex-auto w-full" [style]="{ width: '100%' }"
+                     formControlName="expirationDate" placeholder="Nhập thời gian hết hạn"></p-inputNumber>
+      <div *ngIf="isFieldValid('expirationDate', pakageServiceForm)" class="error-message text-red-500">Thời gian hết hạn là bắt buộc
+      </div>
+    </div>
+
+    <div class="col-12 flex flex-column gap-2">
+      <label for="content" class="font-semibold">Mô tả</label>
+      <textarea id="content" rows="5" cols="30" pInputTextarea formControlName="content" placeholder="Nhập mô tả"></textarea>
+    </div>
+
+    <div class="col-12 flex flex-column gap-2">
+      <label class="font-semibold">Ảnh<span class="pl-2 text-red-600">*</span></label>
+      <div class="flex gap-2">
+        <img width="500" height="300" src="{{ pathEnvironment + '/' + data.avatar }}" alt="favicon" />
+        <div *ngIf="data.actionDialog !== SYSTEM_ACTION.VIEW">
+          <input type="file" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+        <div *ngIf="isFieldValid('avatar', pakageServiceForm)" class="error-message text-red-500">Ảnh đại diện là bắt buộc
+        </div>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="data.actionDialog !== SYSTEM_ACTION.VIEW" class="flex justify-content-end gap-2 mt-3">
+    <p-button label="Cancel" severity="secondary" (click)="onHideDialog()"></p-button>
+    <p-button *ngIf="data.actionDialog === SYSTEM_ACTION.CREATE" label="Create" (click)="onCreateUser()"></p-button>
+    <p-button *ngIf="data.actionDialog === SYSTEM_ACTION.UPDATE" label="Save" (click)="onUpdateUser()"></p-button>
+  </div>
+</p-dialog>
