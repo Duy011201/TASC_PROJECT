@@ -3,6 +3,7 @@ package com.example.userservice.service.impl;
 import com.example.userservice.config.JwtConfig;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
+import com.example.userservice.enums.SystemStatus;
 import com.example.userservice.repository.CompanyRepository;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.AuthService;
@@ -34,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<HandleResponse> login(UserDto userDto) {
         UserEntity userEntity = userRepository.findUserByEmail(userDto.getEmail());
 
-        if (userEntity != null && StringUtils.isNotEmpty(userEntity.getPassword())
+        if (userEntity != null && userEntity.getStatus().equals(SystemStatus.ACTIVE) && StringUtils.isNotEmpty(userEntity.getPassword())
                 && HashPassword.matchesPassword(userDto.getPassword(), userEntity.getPassword())) {
             String token = jwtConfig.generateJwtToken(
                     userEntity.getUserID(), userEntity.getEmail(), userEntity.getRole()
@@ -47,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<HandleResponse<UserDto>> signup           (UserDto userDto) {
+    public ResponseEntity<HandleResponse<UserDto>> signup (UserDto userDto) {
         UserEntity userExit = userRepository.findUserByEmail(userDto.getEmail());
 
         if (userExit == null) {
