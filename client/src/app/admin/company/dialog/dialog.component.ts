@@ -66,6 +66,7 @@ export class DialogCompanyComponent implements OnInit {
   ngOnChanges() {
     this.companyForm.patchValue({
       companyID: this.data.companyID,
+      companyName: this.data.companyName,
       introduce: this.data.introduce,
       email: this.data.email,
       phone: this.data.phone,
