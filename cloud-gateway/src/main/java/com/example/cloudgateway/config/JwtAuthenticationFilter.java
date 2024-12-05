@@ -28,6 +28,10 @@ public class JwtAuthenticationFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
+        if (requestURI.startsWith("/uploads/")) {
+            return chain.filter(exchange);
+        }
+
         String token = jwtConfig.getJwtFromRequest(exchange.getRequest());
         if (token != null && jwtConfig.validateJwtToken(token)) {
             Authentication authentication = jwtConfig.getAuthentication(token);
