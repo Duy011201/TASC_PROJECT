@@ -2,37 +2,44 @@
           [style]="{ width: '60rem' }" (onHide)="onHideDialog()">
   <span class="p-text-secondary block mb-5">{{ data.subHeaderDialog }} </span>
 
-  <div [style.pointer-events]="data.actionDialog === SYSTEM_ACTION.VIEW ? 'none' : 'auto'">
+  <form [formGroup]="recruitmentForm" [style.pointer-events]="data.actionDialog === SYSTEM_ACTION.VIEW ? 'none' : 'auto'">
     <div class="grid">
       <div class="col-6">
         <div class="flex flex-column gap-2">
           <label for="title" class="font-semibold">Tiêu đề<span class="pl-2 text-red-600">*</span></label>
-          <input pInputText id="title" class="flex-auto" [(ngModel)]="data.title" (change)="onChangeTitle($event)"
+          <input pInputText id="title" class="flex-auto" formControlName="title" (change)="onChangeTitle($event)"
                  placeholder="Nhập tiêu đề"/>
+          <div *ngIf="isFieldValid('title', recruitmentForm)" class="error-message text-red-500">Tiêu đề là bắt buộc
+          </div>
         </div>
       </div>
 
       <div class="col-6">
         <div class="flex flex-column gap-2">
           <label for="address" class="font-semibold">Địa chỉ<span class="pl-2 text-red-600">*</span></label>
-          <input pInputText id="address" class="flex-auto" [(ngModel)]="data.address" placeholder="Nhập địa chỉ"/>
+          <input pInputText id="address" class="flex-auto" formControlName="address" placeholder="Nhập địa chỉ"/>
+          <div *ngIf="isFieldValid('address', recruitmentForm)" class="error-message text-red-500">Địa chỉ là bắt buộc
+          </div>
         </div>
       </div>
 
       <div class="col-6">
-        <div class="flex flex-column gap-2">
-          <label for="keyword" class="font-semibold">Từ khóa<span class="pl-2 text-red-600"></span></label>
-          <input disabled="true" pInputText id="keyword" class="flex-auto" [(ngModel)]="data.keyword"
-                 placeholder="Nhập từ khóa"/>
-        </div>
-      </div>
-
-      <div class="col-6">
-        <div class="flex flex-column gap-2">
+        <div class="flex flex-column gap-2" [style.pointer-events]="'none'">
           <label for="status" class="font-semibold">Trạng thái<span class="pl-2 text-red-600">*</span></label>
-          <p-dropdown [disabled]="true" id="status" [options]="LIST_RECRUITMENT"
-                      [(ngModel)]="selectStatus" placeholder="Chọn trạng thái" optionLabel="NAME" [showClear]="true"
+          <p-dropdown id="status" [options]="LIST_RECRUITMENT" [optionValue]="'CODE'"
+                      formControlName="status" placeholder="Chọn trạng thái" optionLabel="NAME" [showClear]="true"
                       [style]="{ width: '100%' }">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="flex flex-column gap-2">
+          <label for="timeForm" class="font-semibold">Hình thức làm việc<span
+            class="pl-2 text-red-600">*</span></label>
+          <p-dropdown id="timeForm" [options]="LIST_FORM_WORK"
+                      formControlName="formWork" placeholder="Chọn hình thức làm việc" optionLabel="NAME"
+                      [showClear]="true" [optionValue]="'CODE'" [style]="{ width: '100%' }">
           </p-dropdown>
         </div>
       </div>
@@ -40,28 +47,16 @@
       <div class="col-6">
         <div class="flex flex-column gap-2">
           <label for="language" class="font-semibold">Lĩnh vực<span class="pl-2 text-red-600">*</span></label>
-          <p-dropdown id="language" [options]="LIST_FIELD" [(ngModel)]="selectField" placeholder="Chọn lĩnh vực"
-                      optionLabel="NAME" [showClear]="true" [style]="{ width: '100%' }"></p-dropdown>
+          <p-dropdown id="language" [options]="LIST_FIELD" formControlName="field" placeholder="Chọn lĩnh vực"
+                      optionLabel="NAME" [optionValue]="'CODE'" [showClear]="true" [style]="{ width: '100%' }"></p-dropdown>
         </div>
       </div>
 
       <div class="col-6">
         <div class="flex flex-column gap-2">
           <label for="province" class="font-semibold">Tỉnh<span class="pl-2 text-red-600">*</span></label>
-          <p-dropdown id="province" [options]="LIST_PROVINCE" [(ngModel)]="selectProvince" placeholder="Chọn tỉnh"
-                      optionLabel="NAME" [showClear]="true" [style]="{ width: '100%' }">
-          </p-dropdown>
-        </div>
-      </div>
-
-      <div class="col-12">
-        <div class="flex flex-column gap-2">
-          <label for="timeForm" class="font-semibold">Hình thức làm việc<span
-            class="pl-2 text-red-600">*</span></label>
-          <p-dropdown id="timeForm" [options]="LIST_TIME_FORM"
-                      [(ngModel)]="selectTimeForm" placeholder="Chọn hình thức làm việc" optionLabel="NAME"
-                      [showClear]="true"
-                      [style]="{ width: '100%' }">
+          <p-dropdown id="province" [options]="LIST_PROVINCE" formControlName="province" placeholder="Chọn tỉnh"
+                      optionLabel="NAME" [optionValue]="'CODE'" [showClear]="true" [style]="{ width: '100%' }">
           </p-dropdown>
         </div>
       </div>
@@ -70,12 +65,8 @@
         <div class="flex flex-column gap-2">
           <label for="address" class="font-semibold">Thời gian bắt đầu<span class="pl-2 text-red-600">*</span></label>
           <p-calendar
-            disabled="true"
-            [(ngModel)]="data.timeStart"
-            [iconDisplay]="'input'"
-            [showIcon]="true"
-            placeholder="Chọn thời gian bắt đầu"
-            inputId="icondisplay"></p-calendar>
+            [disabled]="true" formControlName="timeStart" [iconDisplay]="'input'" [showIcon]="true"
+            placeholder="Chọn thời gian bắt đầu" inputId="icondisplay"></p-calendar>
         </div>
       </div>
 
@@ -83,18 +74,15 @@
         <div class="flex flex-column gap-2">
           <label for="address" class="font-semibold">Thời gian kết thúc<span class="pl-2 text-red-600">*</span></label>
           <p-calendar
-            [(ngModel)]="data.timeEnd"
-            [iconDisplay]="'input'"
-            [showIcon]="true"
-            placeholder="Chọn thời gian kết thúc"
-            inputId="icondisplay"></p-calendar>
+            formControlName="timeEnd" [iconDisplay]="'input'" [showIcon]="true"
+            placeholder="Chọn thời gian kết thúc" inputId="icondisplay"></p-calendar>
         </div>
       </div>
 
       <div class="col-6">
         <div class="flex flex-column gap-2">
           <label for="address" class="font-semibold">Mức lương bắt đầu (Triệu)<span class="pl-2 text-red-600">*</span></label>
-          <p-inputNumber class="flex-auto" [(ngModel)]="data.salaryFrom" mode="decimal" inputId="withoutgrouping"
+          <p-inputNumber class="flex-auto" formControlName="salaryFrom" mode="decimal" inputId="withoutgrouping"
                          [useGrouping]="false" placeholder="Nhập mức lương bắt đầu"></p-inputNumber>
         </div>
       </div>
@@ -102,28 +90,36 @@
       <div class="col-6">
         <div class="flex flex-column gap-2">
           <label for="address" class="font-semibold">Mức lương kết thúc (Triệu)<span class="pl-2 text-red-600">*</span></label>
-          <p-inputNumber class="flex-auto" [(ngModel)]="data.salaryTo" mode="decimal" inputId="withoutgrouping"
+          <p-inputNumber class="flex-auto" formControlName="salaryTo" mode="decimal" inputId="withoutgrouping"
                          [useGrouping]="false" placeholder="Nhập mức lương kết thúc"></p-inputNumber>
         </div>
       </div>
 
       <div class="col-12">
         <div class="flex flex-column gap-2" [style]="{'height':'300px'}">
-          <label for="description" class="font-semibold">Mô tả<span class="pl-2 text-red-600">*</span></label>
-          <quill-editor id="description" [(ngModel)]="data.description" [style]="{'height':'200px'}"
+          <label for="description" class="font-semibold">Mô tả công việc<span class="pl-2 text-red-600">*</span></label>
+          <quill-editor id="description" formControlName="description" [style]="{'height':'200px'}"
                         placeholder="Nhập mô tả tại đây..."></quill-editor>
         </div>
       </div>
 
       <div class="col-12">
         <div class="flex flex-column gap-2" [style]="{'height':'300px'}">
-          <label for="required" class="font-semibold">Yêu cầu<span class="pl-2 text-red-600">*</span></label>
-          <quill-editor id="required" [(ngModel)]="data.required" [style]="{'height':'200px'}"
+          <label for="required" class="font-semibold">Yêu cầu công việc<span class="pl-2 text-red-600">*</span></label>
+          <quill-editor id="required" formControlName="required" [style]="{'height':'200px'}"
                         placeholder="Nhập yêu cầu tại đây..."></quill-editor>
         </div>
       </div>
+
+      <div class="col-12">
+        <div class="flex flex-column gap-2" [style]="{'height':'300px'}">
+          <label for="benefit" class="font-semibold">Quyền lợi công việc<span class="pl-2 text-red-600">*</span></label>
+          <quill-editor id="benefit" formControlName="benefit" [style]="{'height':'200px'}"
+                        placeholder="Nhập quyền lợi tại đây..."></quill-editor>
+        </div>
+      </div>
     </div>
-  </div>
+  </form>
   <div *ngIf="data.actionDialog !== SYSTEM_ACTION.VIEW" class="flex justify-content-end gap-2 mt-3">
     <p-button label="Cancel" severity="secondary" (click)="onHideDialog()"></p-button>
     <p-button *ngIf="data.actionDialog === SYSTEM_ACTION.CREATE" label="Create" (click)="onCreate()"></p-button>

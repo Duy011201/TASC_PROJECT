@@ -60,7 +60,7 @@ export class RecruitmentComponent implements OnInit {
 
   onSearch() {
     let payload = _.clone(this.payload);
-    payload.status = this.selectedStatusRecruitment.CODE;
+    this.selectedStatusRecruitment.CODE ? payload.status = this.selectedStatusRecruitment.CODE : '';
     this.apiGetAll(payload)
   }
 
@@ -138,7 +138,6 @@ export class RecruitmentComponent implements OnInit {
       .statusRecruitment({
         recruitmentID: item.recruitmentID,
         status: status,
-        updatedBy: removeQuotes(getFromLocalStorage('userID')),
       })
       .subscribe(
         (result: any) => {

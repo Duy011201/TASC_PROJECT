@@ -68,13 +68,13 @@ export class LoginComponent {
 
             if (removeQuotes(getFromLocalStorage('role')) === this.SYSTEM_ROLE.ROLE_ADMIN) {
               this.onNextPage(
-                this.SYSTEM_PAGE.RELATED_ADMIN + '/' + this.SYSTEM_PAGE.MANAGER_ORDER_APPROVAL
+                this.SYSTEM_PAGE.RELATED_ADMIN + '/' + this.SYSTEM_PAGE.MANAGER_USER
               );
             }
 
             if (removeQuotes(getFromLocalStorage('role')) === this.SYSTEM_ROLE.ROLE_EMPLOYER) {
               this.onNextPage(
-                this.SYSTEM_PAGE.RELATED_EMPLOYER + '/' + this.SYSTEM_PAGE.DASHBOARD
+                this.SYSTEM_PAGE.RELATED_EMPLOYER + '/' + this.SYSTEM_PAGE.MANAGER_RECRUITMENT
               );
             }
 

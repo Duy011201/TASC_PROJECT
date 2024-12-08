@@ -12,8 +12,6 @@ import {environment} from "../../core/environments/develop.environment";
 })
 export class MenuLeftComponent {
   SYSTEM_PAGE = SETTING.SYSTEM_PAGE;
-  email = removeQuotes(getFromLocalStorage('email'))
-  avatar = removeQuotes(getFromLocalStorage('avatar'))
   pathEnvironment = environment.API_URL;
 
   constructor(private router: Router) {}

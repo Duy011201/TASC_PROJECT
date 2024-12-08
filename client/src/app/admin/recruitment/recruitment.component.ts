@@ -128,7 +128,6 @@ export class RecruitmentComponent implements OnInit {
       .statusRecruitment({
         recruitmentID: item.recruitmentID,
         status: status,
-        updatedBy: removeQuotes(getFromLocalStorage('userID')),
       })
       .subscribe(
         (result: any) => {

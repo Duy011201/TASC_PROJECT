@@ -27,7 +27,7 @@ export class DialogRecruitmentComponent implements OnInit {
   LIST_RECRUITMENT: any = CONSTANT.RECRUITMENT;
   LIST_PROVINCE: any = CONSTANT.COMPANY_PROVINCE;
   LIST_FIELD: any = CONSTANT.COMPANY_FIELD;
-  LIST_TIME_FORM: any = CONSTANT.TIME_FORM;
+  LIST_FORM_WORK: any = CONSTANT.FORM_WORK;
   SYSTEM_ACTION = SETTING.SYSTEM_ACTION;
   selectProvince: any = {};
   selectField: any = {};
@@ -58,7 +58,7 @@ export class DialogRecruitmentComponent implements OnInit {
     this.selectField = this.LIST_FIELD.find(
       (item: any) => item.CODE === this.data.field
     );
-    this.selectTimeForm = this.LIST_TIME_FORM.find(
+    this.selectTimeForm = this.LIST_FORM_WORK.find(
       (item: any) => item.CODE === this.data.timeForm
     );
     if (this.data) {

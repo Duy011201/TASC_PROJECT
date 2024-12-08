@@ -26,10 +26,10 @@ export const routes: Routes = [
     path: SETTING.SYSTEM_PAGE.MANAGER_SERVICE_PACK,
     component: PackageServiceComponent,
   },
-  // {
-  //   path: SETTING.SYSTEM_PAGE.MANAGER_RECRUITMENT,
-  //   component: RecruitmentComponent,
-  // },
+  {
+    path: SETTING.SYSTEM_PAGE.MANAGER_RECRUITMENT,
+    component: RecruitmentComponent,
+  },
   {
     path: SETTING.SYSTEM_PAGE.RELATED_404,
     component: PageNotFoundComponent,
