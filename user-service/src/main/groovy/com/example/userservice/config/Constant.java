@@ -16,9 +16,11 @@ public interface Constant {
     public static final String COMPANY_EXIT = "Công ty đã tồn tại";
     public static final String EMAIL_EXIT = "Email đã tồn tại";
     public static final String CORPORATE_TAX_CODE_EXIT = "Mã số thuế đã tồn tại";
+    public static final String RECRUITMENT_EXIT = "Tin tuyển dụng đã tồn tại";
 
     public static final String ACCOUNT_NOT_EXIT = "Tài khoản không tồn tại";
     public static final String COMPANY_NOT_EXIT = "Công ty không tồn tại";
+    public static final String RECRUITMENT_NOT_EXIT = "Tin tuyển dụng không tồn tại";
 
     public static final String COMPANY_REQUIRE = "Công ty bắt buộc";
 

@@ -59,5 +59,5 @@ public class UserEntity implements Serializable {
     private Timestamp createdAt;
 
     @Column(name = "updatedAt", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
-    private Timestamp updatedAt = new Timestamp(System.currentTimeMillis());;
+    private Timestamp updatedAt = new Timestamp(System.currentTimeMillis());
 }
