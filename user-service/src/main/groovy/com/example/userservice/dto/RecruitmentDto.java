@@ -23,7 +23,7 @@ public class RecruitmentDto {
     @NotBlank(message = "UserID must not be blank")
     private String userID;
 
-    private RecruitmentStatus status = RecruitmentStatus.PENDING;
+    private RecruitmentStatus status;
 
     @NotBlank(message = "Title must not be blank")
     private String title;

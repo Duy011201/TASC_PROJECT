@@ -13,6 +13,7 @@ import {environment} from "../../core/environments/develop.environment";
 export class MenuLeftComponent {
   SYSTEM_PAGE = SETTING.SYSTEM_PAGE;
   pathEnvironment = environment.API_URL;
+  email = removeQuotes(getFromLocalStorage('email'));
 
   constructor(private router: Router) {}
 

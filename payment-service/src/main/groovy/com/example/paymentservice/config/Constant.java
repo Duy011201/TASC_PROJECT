@@ -10,7 +10,7 @@ public interface Constant {
     public static final String UPDATE_SUCCESS = "Sửa thành công";
     public static final String DELETE_SUCCESS = "Xóa thành công";
     public static final String GET_SUCCESS = "Lấy dữ liệu thành công";
-    public static final String GET_FAIL = "Lấy dữ liệu thất bại";
+    public static final String SEND_EMAIL_SUCCESS = "Gửi email thành công";
 
     public static final String ACCOUNT_EXIT = "Tài khoản đã tồn tại";
     public static final String COMPANY_EXIT = "Công ty đã tồn tại";
@@ -30,4 +30,6 @@ public interface Constant {
     public static final String ADD_FAIL = "Thêm thất bại";
     public static final String UPDATE_FAIL = "Sửa thất bại";
     public static final String DELETE_FAIL = "Xóa thất bại";
+    public static final String GET_FAIL = "Lấy dữ liệu thất bại";
+    public static final String SEND_EMAIL_FAIL = "Gửi email thất bại";
 }

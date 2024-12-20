@@ -29,6 +29,7 @@ export class DialogRecruitmentComponent implements OnInit {
   LIST_FIELD: any = CONSTANT.COMPANY_FIELD;
   LIST_FORM_WORK: any = CONSTANT.FORM_WORK;
   SYSTEM_ACTION = SETTING.SYSTEM_ACTION;
+  STATUS_RECRUITMENT: any = SETTING.RECRUITMENT;
 
   currentDate = new Date();
   pathEnvironment = environment.API_URL;
@@ -54,7 +55,7 @@ export class DialogRecruitmentComponent implements OnInit {
       timeEnd: [null, [Validators.required]],
       salaryFrom: [null, [Validators.required]],
       salaryTo: [null, [Validators.required]],
-      status: [null],
+      status: [null, [Validators.required]],
     });
   }
 
@@ -67,11 +68,7 @@ export class DialogRecruitmentComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if (this.data.actionDialog === this.SYSTEM_ACTION.CREATE) {
-      this.data.timeStart = dayjs(this.currentDate).toDate();
-    }
-
-    if (this.data) {
+    if (this.data.actionDialog !== this.SYSTEM_ACTION.CREATE) {
       if (this.data.timeStart) {
         this.data.timeStart = dayjs(this.data.timeStart).toDate();
       }
@@ -91,12 +88,18 @@ export class DialogRecruitmentComponent implements OnInit {
       benefit: this.data.benefit,
       province: this.data.province,
       field: this.data.field,
+      formWork: this.data.formWork,
       timeStart: this.data.timeStart,
       timeEnd: this.data.timeEnd,
       salaryFrom: this.data.salaryFrom,
       salaryTo: this.data.salaryTo,
       status: this.data.status,
     })
+
+    if (this.data.actionDialog === this.SYSTEM_ACTION.CREATE) {
+      this.recruitmentForm.get('timeStart')?.setValue(dayjs(this.currentDate).toDate());
+      this.recruitmentForm.get('status')?.setValue(this.STATUS_RECRUITMENT.PENDING);
+    }
   }
 
   isFieldValid(fieldName: string, formGroup: FormGroup): boolean {

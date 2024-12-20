@@ -41,7 +41,6 @@ export class RecruitmentComponent implements OnInit {
   listRecruitment: any = [];
   loading: boolean = true;
   visible: boolean = false;
-  currentDate = dayjs();
   pathEnvironment = environment.API_URL;
 
   ngOnInit() {

@@ -96,19 +96,27 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
     @Override
     public ResponseEntity<HandleResponse<List<RecruitmentDto>>> getAllRecruitment(RecruitmentDto recruitmentDto) {
-        String status = String.valueOf(recruitmentDto.getStatus());
-        RecruitmentStatus recruitmentStatus = RecruitmentStatus.valueOf(status);
-
+        boolean hasCondition = false;
         StringBuilder sql = new StringBuilder("SELECT r FROM RecruitmentEntity r");
 
-        if (status != null && !status.isEmpty()) {
+        if (recruitmentDto.getStatus() != null) {
             sql.append(" WHERE r.status = :status");
+            hasCondition = true;
+        }
+
+        if (recruitmentDto.getUserID() != null && !recruitmentDto.getUserID().isEmpty()) {
+            sql.append(hasCondition ? " AND" : " WHERE");
+            sql.append(" r.userID = :userID");
         }
 
         Query query = entityManager.createQuery(sql.toString(), RecruitmentEntity.class);
 
-        if (status != null && !status.isEmpty()) {
-            query.setParameter("status", recruitmentStatus);
+        if (recruitmentDto.getStatus() != null) {
+            query.setParameter("status", recruitmentDto.getStatus());
+        }
+
+        if (recruitmentDto.getUserID() != null && !recruitmentDto.getUserID().isEmpty()) {
+            query.setParameter("userID", recruitmentDto.getUserID());
         }
 
         List<RecruitmentEntity> listRecruitmentEntity = query.getResultList();

@@ -18,7 +18,7 @@ public class PackageServiceController {
     private PackageService packageService;
 
     @PostMapping("/all")
-    public ResponseEntity<HandleResponse<List<PackageServiceDto>>> getAllCompany(@Valid @RequestBody PackageServiceDto packageServiceDto) {
+    public ResponseEntity<HandleResponse<List<PackageServiceDto>>> getAllPackageService(@Valid @RequestBody PackageServiceDto packageServiceDto) {
         return packageService.getAllPackageService(packageServiceDto);
     }
 
